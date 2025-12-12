@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.utils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.components.Component;
 import dev.nextftc.core.subsystems.Subsystem;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * This component adds Subsystems to your OpMode
