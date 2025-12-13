@@ -55,13 +55,13 @@ public class Intake implements Subsystem {
     }
 
     private boolean checkTopSensor(){
-        return topSensor.getDistance(DistanceUnit.CM) < 8;
+        return topSensor.getDistance(DistanceUnit.CM) < 6.8;
     }
 
     public Command shootCommand(){
         return new InstantCommand(() -> {
-                        topMotor.setPower(0.8);
-                        intakeMotor.setPower(0.8);
+                        topMotor.setPower(0.75);
+                        intakeMotor.setPower(0.75);
                 })
                 .requires(this);
     }
