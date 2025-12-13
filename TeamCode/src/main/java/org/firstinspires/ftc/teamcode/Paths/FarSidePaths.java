@@ -83,10 +83,10 @@ public class FarSidePaths extends MirrorPaths {
                 .addPath(
                         new BezierLine(
                                 mirrorPose(new Pose(48.468, 15.953)),
-                                mirrorPose(new Pose(29.637, 24.631))
+                                mirrorPose(new Pose(30.729, 11.888))
                         )
                 )
-                .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(164)))
+                .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(90)))
                 .build();
     }
 }

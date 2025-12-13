@@ -51,10 +51,11 @@ public class Chassis implements Subsystem {
             }
         } else {
             allianceMultiplier = 1;
-            target = new Pose(142, 150);
+            target = new Pose(134, 144);
 
             if (isAuto){
-                target = autoTarget.mirror();
+
+                target = new Pose(134, 144);
             }
         }
     }
