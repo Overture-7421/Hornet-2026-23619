@@ -73,8 +73,12 @@ public class Robot {
 
     public SequentialGroup shootOneBallManual(){
         return new SequentialGroup(
-                Shooter.INSTANCE.setShooterManual(),
-                Intake.INSTANCE.shootCommand()
+                new ParallelGroup(
+                    Shooter.INSTANCE.setShooterManual(),
+                    Intake.INSTANCE.loadShooter()
+                ),
+                Intake.INSTANCE.shootCommand(),
+                new Delay(0.2)
         );
     }
 

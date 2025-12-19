@@ -19,6 +19,7 @@ public class Intake implements Subsystem {
     private MotorEx intakeMotor;
     private MotorEx topMotor;
     private ColorRangeSensor topSensor;
+    private ColorRangeSensor middleSensor;
 
     private boolean autoIntake = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
@@ -32,6 +33,8 @@ public class Intake implements Subsystem {
         topMotor = new MotorEx("upMotor").brakeMode().reversed();
 
         topSensor = ActiveOpMode.hardwareMap().get(ColorRangeSensor.class, "upSensor");
+        middleSensor = ActiveOpMode.hardwareMap().get(ColorRangeSensor.class, "middleSensor");
+
 
         autoIntake = false;
     }
@@ -41,6 +44,9 @@ public class Intake implements Subsystem {
     public void periodic(){
         telemetry.addData("TopSensorCM", topSensor.getDistance(DistanceUnit.CM));
         telemetry.addData("TopSensor", checkTopSensor());
+
+        telemetry.addData("MiddleSensorCM", middleSensor.getDistance(DistanceUnit.CM));
+        telemetry.addData("MiddleSensor", checkMiddleSensor());
 
         if (autoIntake){
             if (checkTopSensor()) {
@@ -57,11 +63,12 @@ public class Intake implements Subsystem {
     private boolean checkTopSensor(){
         return topSensor.getDistance(DistanceUnit.CM) < 6.8;
     }
+    private boolean checkMiddleSensor(){return middleSensor.getDistance(DistanceUnit.CM) < 4.0;}
 
     public Command shootCommand(){
         return new InstantCommand(() -> {
                         topMotor.setPower(0.75);
-                        intakeMotor.setPower(0.75);
+                        intakeMotor.setPower(0);
                 })
                 .requires(this);
     }
@@ -100,6 +107,21 @@ public class Intake implements Subsystem {
         return new InstantCommand(()->{
             autoIntake = true;
         });
+    }
+
+    public Command loadShooter(){
+        return new LambdaCommand()
+            .setUpdate(() -> {
+              if(!checkTopSensor() ) {
+                  topMotor.setPower(0.4);
+                  intakeMotor.setPower(1);
+              }
+            }).setStop(interrupted -> {
+              topMotor.setPower(0);
+              intakeMotor.setPower(0);
+            }).setIsDone(() -> checkTopSensor() || (!checkMiddleSensor() && !checkTopSensor())).requires(this);
+
+
     }
 
     public Command intakeAutoOff(){
