@@ -47,7 +47,6 @@ public class FarAuto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        Camera.INSTANCE.enabled = false;
 
         autoCommand().schedule();
     }
@@ -60,7 +59,6 @@ public class FarAuto extends NextFTCOpMode {
     @Override
     public void onStop() {
         BindingManager.reset();
-        Camera.INSTANCE.enabled = true;
 
         Chassis.INSTANCE.setLastPose();
     }

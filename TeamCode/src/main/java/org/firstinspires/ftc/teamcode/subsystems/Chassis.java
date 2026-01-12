@@ -24,10 +24,10 @@ public class Chassis implements Subsystem {
     public PIDCoefficients headingControl = new PIDCoefficients(0.95, 0, 0);
     public ControlSystem controlSystem = ControlSystem.builder().posPid(headingControl).build();
     private Follower follower;
+    public double speedMultiplier;
     private final double turnMultiplier = -0.7;
     private double allianceMultiplier = -1;
-    public Pose target = new Pose(2, 132);
-    public Pose autoTarget = new Pose(2,142);
+    public Pose target = new Pose(4, 140);
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
     private Chassis() {
@@ -46,17 +46,9 @@ public class Chassis implements Subsystem {
     public void setAllianceColor(Alliance allianceColor, boolean isAuto) {
         if (allianceColor == Alliance.Blue) {
             allianceMultiplier = -1;
-            if (isAuto){
-                target = autoTarget;
-            }
         } else {
             allianceMultiplier = 1;
-            target = new Pose(134, 144);
-
-            if (isAuto){
-
-                target = new Pose(134, 144);
-            }
+            target = target.mirror();
         }
     }
 
@@ -72,9 +64,15 @@ public class Chassis implements Subsystem {
                         turn = ActiveOpMode.gamepad1().right_stick_x * turnMultiplier;
                     }
 
+                    if(ActiveOpMode.gamepad1().left_bumper){
+                        speedMultiplier = 0.4;
+                    } else {
+                        speedMultiplier = 1;
+                    }
+
                     follower.setTeleOpDrive(
-                            -ActiveOpMode.gamepad1().left_stick_y * allianceMultiplier,
-                            -ActiveOpMode.gamepad1().left_stick_x * allianceMultiplier,
+                            -ActiveOpMode.gamepad1().left_stick_y * allianceMultiplier * speedMultiplier,
+                            -ActiveOpMode.gamepad1().left_stick_x * allianceMultiplier * speedMultiplier,
                             turn,
                             false);
 
