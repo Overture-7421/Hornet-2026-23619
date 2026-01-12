@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.utils;
 
 import com.pedropathing.geometry.Pose;
 
+import org.firstinspires.ftc.teamcode.subsystems.Camera;
 import org.firstinspires.ftc.teamcode.subsystems.Chassis;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
@@ -9,7 +10,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.delays.WaitUntil;
-import dev.nextftc.core.commands.groups.ParallelDeadlineGroup;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.ftc.Gamepads;
@@ -49,37 +49,31 @@ public class Robot {
         Gamepads.gamepad1().rightTrigger().greaterThan(0.3)
                 .whenTrue(Intake.INSTANCE.intakeCommand())
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
-        Gamepads.gamepad1().leftBumper()
+        Gamepads.gamepad1().b()
                 .whenTrue(Intake.INSTANCE.shootCommand())
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
         Gamepads.gamepad1().rightBumper()
                 .whenTrue(Intake.INSTANCE.reverseIntake())
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
+
+        // Gamepad 2
+        Gamepads.gamepad2().a()
+                .whenBecomesTrue(()->{
+                    Camera.INSTANCE.isMt2 = true;
+                });
+
+        Gamepads.gamepad2().b()
+                .whenBecomesTrue(()->{
+                    Camera.INSTANCE.isMt2 = false;
+                });
+
     }
 
     public Command stopShooting(){
         return new ParallelGroup(
-                Shooter.INSTANCE.stopShooter(),
+                Shooter.INSTANCE.slowShooter(),
                 Intake.INSTANCE.stopCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
-    }
-
-    public SequentialGroup shootOneBall(){
-        return new SequentialGroup(
-                Shooter.INSTANCE.setShooter(),
-                Intake.INSTANCE.shootCommand()
-            );
-    }
-
-    public SequentialGroup shootOneBallManual(){
-        return new SequentialGroup(
-                new ParallelGroup(
-                    Shooter.INSTANCE.setShooterManual(),
-                    Intake.INSTANCE.loadShooter()
-                ),
-                Intake.INSTANCE.shootCommand(),
-                new Delay(0.2)
-        );
     }
 
     public Command shootAutonomous(){
@@ -94,17 +88,15 @@ public class Robot {
     public Command automaticShoot(){
         return new SequentialGroup(
                 new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
-                shootOneBall(),
-                shootOneBall(),
-                shootOneBall()
+                Shooter.INSTANCE.setShooter(),
+                Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
 
     public Command manualShoot(){
         return new SequentialGroup(
-                shootOneBallManual(),
-                shootOneBallManual(),
-                shootOneBallManual()
+                Shooter.INSTANCE.setShooterManual(),
+                Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
 
