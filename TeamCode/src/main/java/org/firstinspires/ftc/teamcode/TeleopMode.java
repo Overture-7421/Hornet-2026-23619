@@ -31,11 +31,11 @@ public class TeleopMode extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        robot.initRobotTeleop();
     }
 
     @Override
     public void onStartButtonPressed() {
+        robot.initRobotTeleop();
         robot.setBindings();
         Intake.INSTANCE.intakeAutoOff().schedule();
     }

@@ -71,13 +71,14 @@ public class Robot {
 
     public Command stopShooting(){
         return new ParallelGroup(
-                Shooter.INSTANCE.slowShooter(),
+                Shooter.INSTANCE.stopShooter(),
                 Intake.INSTANCE.stopCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
 
     public Command shootAutonomous(){
         return new SequentialGroup(
+                Chassis.INSTANCE.selectTarget(),
                 Chassis.INSTANCE.autoAlign(),
                 Shooter.INSTANCE.setShooter(),
                 Intake.INSTANCE.shootCommand(),
@@ -87,6 +88,7 @@ public class Robot {
 
     public Command automaticShoot(){
         return new SequentialGroup(
+                Chassis.INSTANCE.selectTarget(),
                 new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
                 Shooter.INSTANCE.setShooter(),
                 Intake.INSTANCE.shootCommand()
@@ -95,6 +97,7 @@ public class Robot {
 
     public Command manualShoot(){
         return new SequentialGroup(
+                Chassis.INSTANCE.selectTarget(),
                 Shooter.INSTANCE.setShooterManual(),
                 Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);

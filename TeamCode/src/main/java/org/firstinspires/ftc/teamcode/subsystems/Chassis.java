@@ -14,6 +14,7 @@ import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.KineticState;
 import dev.nextftc.control.feedback.PIDCoefficients;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.ActiveOpMode;
@@ -27,7 +28,12 @@ public class Chassis implements Subsystem {
     public double speedMultiplier;
     private final double turnMultiplier = -0.7;
     private double allianceMultiplier = -1;
-    public Pose target = new Pose(4, 140);
+    public  Pose target = new Pose(0,0);
+    public Pose nearTarget2 = new Pose(0,0);
+    public Pose nearTarget = new Pose(4, 140);
+    public Pose farTarget2 = new Pose(0,0);
+    public Pose farTarget = new Pose(7, 140);
+
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
     private Chassis() {
@@ -46,10 +52,25 @@ public class Chassis implements Subsystem {
     public void setAllianceColor(Alliance allianceColor, boolean isAuto) {
         if (allianceColor == Alliance.Blue) {
             allianceMultiplier = -1;
+            target = nearTarget;
+            nearTarget2 = nearTarget;
+            farTarget2 = farTarget;
         } else {
             allianceMultiplier = 1;
-            target = target.mirror();
+            target = nearTarget.mirror();
+            nearTarget2 = nearTarget.mirror();
+            farTarget2 = farTarget.mirror();
         }
+    }
+
+    public Command selectTarget(){ 
+        return new InstantCommand(()->{
+            if (getDistanceToTarget() > 122){
+                target = farTarget2;
+            } else {
+                target = nearTarget2;
+            }
+        });
     }
 
     public Command drive() {
@@ -65,7 +86,7 @@ public class Chassis implements Subsystem {
                     }
 
                     if(ActiveOpMode.gamepad1().left_bumper){
-                        speedMultiplier = 0.4;
+                        speedMultiplier = 0.01;
                     } else {
                         speedMultiplier = 1;
                     }
@@ -121,9 +142,9 @@ public class Chassis implements Subsystem {
         drive().schedule();
     }
 
-    public double calculateHeading(Pose target) {
+    public double calculateHeading(Pose tempTarget) {
         Pose robotPose = follower.getPose();
-        return Math.atan2(target.getY() - robotPose.getY(), target.getX() - robotPose.getX()
+        return Math.atan2(tempTarget.getY() - robotPose.getY(), tempTarget.getX() - robotPose.getX()
         );
     }
 
