@@ -36,8 +36,6 @@ public class CloseAuto extends NextFTCOpMode {
                 BindingsComponent.INSTANCE,
                 BulkReadComponent.INSTANCE
         );
-
-
     }
 
     public void onInit() {
@@ -76,9 +74,10 @@ public class CloseAuto extends NextFTCOpMode {
                         Intake.INSTANCE.intakeAutoOn(),
                         Shooter.INSTANCE.stopShooter()
                 ),
-                new FollowPath(paths.Path3,false, 0.8),
-                new Delay(0.5),
                 Intake.INSTANCE.intakeAutoOff(),
+                Intake.INSTANCE.stopCommand(),
+                new FollowPath(paths.Path3,false, 0.65),
+                new Delay(0.5),
                 new FollowPath(paths.Path4,false, 0.75),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
@@ -87,6 +86,7 @@ public class CloseAuto extends NextFTCOpMode {
                         Shooter.INSTANCE.stopShooter()
                 ),
                 Intake.INSTANCE.intakeAutoOff(),
+                Intake.INSTANCE.stopCommand(),
                 new FollowPath(paths.Path6),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
@@ -95,6 +95,7 @@ public class CloseAuto extends NextFTCOpMode {
                         Shooter.INSTANCE.stopShooter()
                 ),
                 Intake.INSTANCE.intakeAutoOff(),
+                Intake.INSTANCE.stopCommand(),
                 new FollowPath(paths.Path8, false),
                 robot.shootAutonomous(),
                 new ParallelGroup(
