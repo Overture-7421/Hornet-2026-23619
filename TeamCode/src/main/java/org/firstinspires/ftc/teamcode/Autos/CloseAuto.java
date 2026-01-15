@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Autos;
 
 import org.firstinspires.ftc.teamcode.Paths.CloseSidePaths;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.Camera;
 import org.firstinspires.ftc.teamcode.subsystems.Chassis;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
@@ -31,7 +30,7 @@ public class CloseAuto extends NextFTCOpMode {
         robot = new Robot(allianceColor);
 
         addComponents(
-                new SubsystemComponent(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE, Camera.INSTANCE),
+                new SubsystemComponent(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE),
                 new PedroComponent(Constants::createFollower),
                 BindingsComponent.INSTANCE,
                 BulkReadComponent.INSTANCE
