@@ -27,7 +27,7 @@ public class Chassis implements Subsystem {
     public ControlSystem controlSystem = ControlSystem.builder().posPid(headingControl).build();
     private Follower follower;
     public double speedMultiplier;
-    private final double turnMultiplier = -0.7;
+    public double turnMultiplier;
     private double allianceMultiplier = -1;
     public  Pose target = new Pose(0,0);
     public Pose nearTarget2 = new Pose(0,0);
@@ -79,17 +79,20 @@ public class Chassis implements Subsystem {
                 .setStart(() -> follower.startTeleopDrive(true))
                 .setUpdate(() -> {
                     double turn;
+
+                    if(ActiveOpMode.gamepad1().left_bumper){
+                        turnMultiplier = -0.35;
+                        speedMultiplier = 0.25;
+                    } else {
+                        turnMultiplier = -0.7;
+                        speedMultiplier = 1;
+                    }
+
                     if (ActiveOpMode.gamepad1().left_trigger > 0.4) {
                         updateHeadingGoal();
                         turn = controlSystem.calculate(new KineticState(follower.getHeading()));
                     } else {
                         turn = ActiveOpMode.gamepad1().right_stick_x * turnMultiplier;
-                    }
-
-                    if(ActiveOpMode.gamepad1().left_bumper){
-                        speedMultiplier = 0.01;
-                    } else {
-                        speedMultiplier = 1;
                     }
 
                     follower.setTeleOpDrive(
