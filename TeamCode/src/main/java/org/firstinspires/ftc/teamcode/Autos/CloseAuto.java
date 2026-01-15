@@ -68,34 +68,34 @@ public class CloseAuto extends NextFTCOpMode {
         return new SequentialGroup(
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.path1, false, 0.7),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.stopShooter()
                 ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path2,false, 0.7),
                         Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.stopShooter()
                 ),
                 new FollowPath(paths.Path3,false, 0.8),
                 new Delay(0.5),
-                new FollowPath(paths.Path4,false, 0.75),
                 Intake.INSTANCE.intakeAutoOff(),
+                new FollowPath(paths.Path4,false, 0.75),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path5, false, 0.85),
                         Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.stopShooter()
                 ),
-                new FollowPath(paths.Path6),
                 Intake.INSTANCE.intakeAutoOff(),
+                new FollowPath(paths.Path6),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path7, false, 1.0),
                         Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.stopShooter()
                 ),
-                new FollowPath(paths.Path8, false),
                 Intake.INSTANCE.intakeAutoOff(),
+                new FollowPath(paths.Path8, false),
                 robot.shootAutonomous(),
                 new ParallelGroup(
                         Shooter.INSTANCE.stopShooter(),

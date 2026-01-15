@@ -9,6 +9,7 @@ import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 import org.firstinspires.ftc.teamcode.utils.PoseStorage;
 import org.firstinspires.ftc.teamcode.utils.Robot.Alliance;
+import org.opencv.core.Mat;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.KineticState;
@@ -122,7 +123,7 @@ public class Chassis implements Subsystem {
                 .setStop((Boolean interrupted) -> {
                    follower.breakFollowing();
                 })
-                .setIsDone(this::isAtTargetHeading)
+                .setIsDone(()->controlSystem.isWithinTolerance(new KineticState(Math.toRadians(3))))
                 .requires(this);
     }
 
