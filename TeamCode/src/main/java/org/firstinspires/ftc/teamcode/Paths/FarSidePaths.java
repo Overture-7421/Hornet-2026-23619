@@ -20,6 +20,7 @@ public class FarSidePaths extends MirrorPaths {
     public PathChain Path6;
     public PathChain Path7;
     public PathChain Path8;
+    public PathChain Path9;
     public Pose startPose;
 
     public FarSidePaths(Follower follower, Alliance allianceColor) {
@@ -112,6 +113,16 @@ public class FarSidePaths extends MirrorPaths {
                                 mirrorPose(new Pose(57.839, 17.915))
                         )
                 ).setLinearHeadingInterpolation(mirrorHeading(180), mirrorHeading(110))
+
+                .build();
+
+        Path9 = follower.pathBuilder().addPath(
+                        new BezierLine(
+                               mirrorPose( new Pose(57.839, 17.915)),
+
+                                mirrorPose(new Pose(44.869, 24.860))    
+                        )
+                ).setTangentHeadingInterpolation()
 
                 .build();
     }

@@ -98,7 +98,8 @@ public class FarAuto extends NextFTCOpMode {
                 Intake.INSTANCE.stopCommand(),
                 new FollowPath(paths.Path8, false, 0.7),
                 robot.shootAutonomousFar(),
-                Shooter.INSTANCE.stopShooter()
+                Shooter.INSTANCE.stopShooter(),
+                new FollowPath(paths.Path9, false, 0.7)
         );
     }
 }

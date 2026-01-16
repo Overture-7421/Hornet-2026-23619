@@ -90,7 +90,7 @@ public class Chassis implements Subsystem {
 
                     if (ActiveOpMode.gamepad1().left_trigger > 0.4) {
                         updateHeadingGoal();
-                        turn = controlSystem.calculate(new KineticState(follower.getHeading()));
+                            turn = controlSystem.calculate(new KineticState(follower.getHeading()));
                     } else {
                         turn = ActiveOpMode.gamepad1().right_stick_x * turnMultiplier;
                     }
