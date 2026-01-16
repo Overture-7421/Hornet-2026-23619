@@ -44,14 +44,14 @@ public class Intake implements Subsystem {
                 topMotor.setPower(0);
                 intakeMotor.setPower(1);
             } else {
-                topMotor.setPower(0.7);
+                topMotor.setPower(0.5);
                 intakeMotor.setPower(1);
             }
         }
     }
 
     private boolean checkTopSensor(){
-        return topSensor.getDistance(DistanceUnit.CM) < 5.9;
+        return topSensor.getDistance(DistanceUnit.CM) < 6.1;
     }
 
     public Command shootCommand(){

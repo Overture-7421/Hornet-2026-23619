@@ -126,7 +126,7 @@ public class Chassis implements Subsystem {
                 .setStop((Boolean interrupted) -> {
                    follower.breakFollowing();
                 })
-                .setIsDone(()->controlSystem.isWithinTolerance(new KineticState(Math.toRadians(3))))
+                .setIsDone(()->controlSystem.isWithinTolerance(new KineticState(Math.toRadians(4))))
                 .requires(this);
     }
 
