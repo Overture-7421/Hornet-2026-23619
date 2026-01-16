@@ -44,12 +44,15 @@ public class Robot {
                 .whenBecomesTrue(automaticShoot())
                 .whenBecomesFalse(stopShooting());
         Gamepads.gamepad1().a()
-                .whenBecomesTrue(manualShoot())
+                .whenBecomesTrue(manualShootNear())
+                .whenBecomesFalse(stopShooting());
+        Gamepads.gamepad1().b()
+                .whenBecomesTrue(manualShootFar())
                 .whenBecomesFalse(stopShooting());
         Gamepads.gamepad1().rightTrigger().greaterThan(0.3)
                 .whenTrue(Intake.INSTANCE.intakeCommand())
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
-        Gamepads.gamepad1().b()
+        Gamepads.gamepad1().x()
                 .whenTrue(Intake.INSTANCE.shootCommand())
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
         Gamepads.gamepad1().rightBumper()
@@ -86,6 +89,15 @@ public class Robot {
                 ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE);
     }
 
+    public Command shootAutonomousFar(){
+        return new SequentialGroup(
+                Chassis.INSTANCE.autoAlign(),
+                Shooter.INSTANCE.setShooterManualFar(),
+                Intake.INSTANCE.shootCommand(),
+                new Delay(1.4)
+        ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE);
+    }
+
     public Command automaticShoot(){
         return new SequentialGroup(
                 Chassis.INSTANCE.selectTarget(),
@@ -95,10 +107,17 @@ public class Robot {
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
 
-    public Command manualShoot(){
+    public Command manualShootNear(){
         return new SequentialGroup(
                 Chassis.INSTANCE.selectTarget(),
-                Shooter.INSTANCE.setShooterManual(),
+                Shooter.INSTANCE.setShooterManualNear(),
+                Intake.INSTANCE.shootCommand()
+        ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
+    }
+    public Command manualShootFar(){
+        return new SequentialGroup(
+                Chassis.INSTANCE.selectTarget(),
+                Shooter.INSTANCE.setShooterManualFar(),
                 Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }

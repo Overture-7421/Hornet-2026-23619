@@ -76,7 +76,7 @@ public class CloseAuto extends NextFTCOpMode {
                 Intake.INSTANCE.intakeAutoOff(),
                 Intake.INSTANCE.stopCommand(),
                 new FollowPath(paths.Path3,false, 0.65),
-                new Delay(0.5),
+                new Delay(0.8),
                 new FollowPath(paths.Path4,false, 0.75),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(

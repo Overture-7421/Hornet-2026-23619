@@ -28,7 +28,8 @@ public class Shooter implements Subsystem {
     public BasicFeedforwardParameters feedForward = new BasicFeedforwardParameters(0.00049,0.0,0.0);
     public ControlSystem controlSystem = ControlSystem.builder().velPid(coefficients).basicFF(feedForward).build();
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
-    public double manual = 1100;
+    public double manualNear = 1000;
+    public double manualFar = 1200;
     public InterpolatableMap shooterVelocities = new InterpolatableMap();
 
     private long stableSince = 0;
@@ -107,10 +108,19 @@ public class Shooter implements Subsystem {
                 .requires(this);
     }
 
-    public Command setShooterManual(){
+    public Command setShooterManualNear(){
         return new LambdaCommand()
-                .setUpdate(()->controlSystem.setGoal(new KineticState(0, manual, 0)))
-                .setIsDone(()-> isAtSpeed(manual))
+                .setUpdate(()->controlSystem.setGoal(new KineticState(0, manualNear, 0)))
+                .setIsDone(()-> isAtSpeed(manualNear))
                 .requires(this);
     }
+
+    public Command setShooterManualFar(){
+        return new LambdaCommand()
+                .setUpdate(()->controlSystem.setGoal(new KineticState(0, manualFar, 0)))
+                .setIsDone(()-> isAtSpeed(manualFar))
+                .requires(this);
+    }
+
+
 }

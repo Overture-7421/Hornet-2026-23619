@@ -31,7 +31,7 @@ public class FarAuto extends NextFTCOpMode {
         robot = new Robot(allianceColor);
 
         addComponents(
-                new SubsystemComponent(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE, Camera.INSTANCE),
+                new SubsystemComponent(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE),
                 new PedroComponent(Constants::createFollower),
                 BindingsComponent.INSTANCE,
                 BulkReadComponent.INSTANCE
@@ -67,13 +67,13 @@ public class FarAuto extends NextFTCOpMode {
         return new SequentialGroup(
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path1, false, 0.35),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.stopShooter()
                 ),
-                robot.shootAutonomous(),
+                robot.shootAutonomousFar(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path2, false, 0.7),
                         Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.stopShooter()
                 ),
                 new Delay(0.5),
                 new FollowPath(paths.Path3, false, 0.8),
@@ -81,13 +81,24 @@ public class FarAuto extends NextFTCOpMode {
                 new Delay(0.5),
                 new FollowPath(paths.Path5),
                 Intake.INSTANCE.intakeAutoOff(),
-                robot.shootAutonomous(),
+                Intake.INSTANCE.stopCommand(),
+                robot.shootAutonomousFar(),
                 new ParallelGroup(
                         Shooter.INSTANCE.stopShooter(),
                         new FollowPath(paths.Path6, false, 0.8),
                         Intake.INSTANCE.stopCommand()
-                )
-
+                ),
+                new Delay(3),
+                new ParallelDeadlineGroup(
+                        new FollowPath(paths.Path7, false, 0.7),
+                        Intake.INSTANCE.intakeAutoOn(),
+                        Shooter.INSTANCE.stopShooter()
+                ),
+                Intake.INSTANCE.intakeAutoOff(),
+                Intake.INSTANCE.stopCommand(),
+                new FollowPath(paths.Path8, false, 0.7),
+                robot.shootAutonomousFar(),
+                Shooter.INSTANCE.stopShooter()
         );
     }
 }
