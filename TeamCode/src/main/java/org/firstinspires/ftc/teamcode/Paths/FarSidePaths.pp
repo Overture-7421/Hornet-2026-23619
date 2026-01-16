@@ -155,6 +155,23 @@
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
+      "waitAfterName": "",
+      "name": ""
+    },
+    {
+      "id": "mkgbrg0t-gakz1j",
+      "name": "Path 9",
+      "endPoint": {
+        "x": 43.54205607476635,
+        "y": 24.841121495327087,
+        "heading": "tangential",
+        "reverse": false
+      },
+      "controlPoints": [],
+      "color": "#96A689",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
       "waitAfterName": ""
     }
   ],
@@ -191,6 +208,10 @@
     {
       "kind": "path",
       "lineId": "line-15mdwew1i79j"
+    },
+    {
+      "kind": "path",
+      "lineId": "mkgbrg0t-gakz1j"
     }
   ],
   "settings": {
@@ -214,5 +235,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-01-16T01:56:02.248Z"
+  "timestamp": "2026-01-16T03:39:29.869Z"
 }
