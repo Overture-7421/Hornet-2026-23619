@@ -14,6 +14,8 @@ public class FarSidePaths extends MirrorPaths {
 
     public PathChain Path1;
     public PathChain Path2;
+    public PathChain Path2PlayOffs;
+
     public PathChain Path3;
     public PathChain Path4;
     public PathChain Path5;
@@ -44,6 +46,17 @@ public class FarSidePaths extends MirrorPaths {
                 .addPath(
                         new BezierLine(
                                 mirrorPose(new Pose(58.009, 19.109)),
+                                mirrorPose(new Pose(9.896, 8.019))
+                        )
+                )
+                .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(180)))
+                .build();
+
+        Path2PlayOffs = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                mirrorPose(new Pose(56.316, 16.294)),
                                 mirrorPose(new Pose(9.896, 8.019))
                         )
                 )
