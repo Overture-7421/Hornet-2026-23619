@@ -23,8 +23,13 @@ import dev.nextftc.ftc.ActiveOpMode;
 @Configurable
 public class Chassis implements Subsystem {
     public static Chassis INSTANCE = new Chassis();
-    public PIDCoefficients headingControl = new PIDCoefficients(0.95, 0, 0);
+    public PIDCoefficients headingControl = new PIDCoefficients(0.30, 0, 0);
+    public PIDCoefficients headingControl2 = new PIDCoefficients(0.95, 0, 0);
+
     public ControlSystem controlSystem = ControlSystem.builder().posPid(headingControl).build();
+
+    public ControlSystem controlSystem2 = ControlSystem.builder().posPid(headingControl2).build();
+
     private Follower follower;
     public double speedMultiplier;
     public double turnMultiplier;
@@ -47,7 +52,8 @@ public class Chassis implements Subsystem {
         telemetry.addData("DistanceToTarget", getDistanceToTarget());
         telemetry.addData("CurrentHeading", Math.toDegrees(follower.getHeading()));
         telemetry.addData("TargetHeading", Math.toDegrees(calculateHeading(target)));
-        telemetry.addData("ChassisPos", follower.getPose());
+//        telemetry.addData("ChassisPos", follower.getPose());
+        telemetry.addData("Is at target", Chassis.INSTANCE.isAtTargetHeading());
     }
 
     public void setAllianceColor(Alliance allianceColor, boolean isAuto) {
@@ -90,7 +96,11 @@ public class Chassis implements Subsystem {
 
                     if (ActiveOpMode.gamepad1().left_trigger > 0.4) {
                         updateHeadingGoal();
+                        if (getError() > Math.toRadians(12)){
                             turn = controlSystem.calculate(new KineticState(follower.getHeading()));
+                        } else {
+                            turn = controlSystem2.calculate(new KineticState(follower.getHeading()));
+                        }
                     } else {
                         turn = ActiveOpMode.gamepad1().right_stick_x * turnMultiplier;
                     }
@@ -152,12 +162,15 @@ public class Chassis implements Subsystem {
         );
     }
 
-    public boolean isAtTargetHeading() {
-        double error = Math.atan2(
+    public double getError(){
+        return Math.abs(Math.atan2(
                 Math.sin(calculateHeading(target) - follower.getHeading()),
                 Math.cos(calculateHeading(target) - follower.getHeading())
-        );
-        return Math.abs(error) < Math.toRadians(3);
+        ));
+    }
+
+    public boolean isAtTargetHeading() {
+        return getError() < Math.toRadians(3);
     }
 
     public double getDistanceToTarget() {

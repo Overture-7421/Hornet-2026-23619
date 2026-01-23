@@ -56,7 +56,7 @@ public class Intake implements Subsystem {
 
     public Command shootCommand(){
         return new InstantCommand(() -> {
-                        topMotor.setPower(0.5);
+                        topMotor.setPower(1);
                         intakeMotor.setPower(1);
                 })
                 .requires(this);
