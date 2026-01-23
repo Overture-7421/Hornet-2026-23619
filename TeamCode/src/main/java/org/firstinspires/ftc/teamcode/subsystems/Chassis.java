@@ -3,17 +3,15 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
+import com.pedropathing.control.PIDFCoefficients;
+import com.pedropathing.control.PIDFController;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 import org.firstinspires.ftc.teamcode.utils.PoseStorage;
 import org.firstinspires.ftc.teamcode.utils.Robot.Alliance;
-import org.opencv.core.Mat;
 
-import dev.nextftc.control.ControlSystem;
-import dev.nextftc.control.KineticState;
-import dev.nextftc.control.feedback.PIDCoefficients;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
@@ -23,13 +21,8 @@ import dev.nextftc.ftc.ActiveOpMode;
 @Configurable
 public class Chassis implements Subsystem {
     public static Chassis INSTANCE = new Chassis();
-    public PIDCoefficients headingControl = new PIDCoefficients(0.30, 0, 0);
-    public PIDCoefficients headingControl2 = new PIDCoefficients(0.95, 0, 0);
-
-    public ControlSystem controlSystem = ControlSystem.builder().posPid(headingControl).build();
-
-    public ControlSystem controlSystem2 = ControlSystem.builder().posPid(headingControl2).build();
-
+    public PIDFCoefficients pidValues = new PIDFCoefficients(0.3, 0.0, 0.0,0.0);
+    public PIDFController headingController = new PIDFController(pidValues);
     private Follower follower;
     public double speedMultiplier;
     public double turnMultiplier;
@@ -96,11 +89,8 @@ public class Chassis implements Subsystem {
 
                     if (ActiveOpMode.gamepad1().left_trigger > 0.4) {
                         updateHeadingGoal();
-                        if (getError() > Math.toRadians(12)){
-                            turn = controlSystem.calculate(new KineticState(follower.getHeading()));
-                        } else {
-                            turn = controlSystem2.calculate(new KineticState(follower.getHeading()));
-                        }
+                        headingController.updatePosition(follower.getHeading());
+                        turn = headingController.run();
                     } else {
                         turn = ActiveOpMode.gamepad1().right_stick_x * turnMultiplier;
                     }
@@ -121,10 +111,14 @@ public class Chassis implements Subsystem {
 
     public Command autoAlign() {
         return new LambdaCommand()
-                .setStart(() -> follower.startTeleopDrive(true))
+                .setStart(() -> {
+                    follower.startTeleopDrive(true);
+                    resetPID();
+                })
                 .setUpdate(() -> {
                     updateHeadingGoal();
-                    double turn = controlSystem.calculate(new KineticState(follower.getHeading()));
+                    headingController.updatePosition(follower.getHeading());
+                    double turn = headingController.run();
 
                     follower.setTeleOpDrive(
                             0,
@@ -133,11 +127,13 @@ public class Chassis implements Subsystem {
                             false);
 
                 })
-                .setStop((Boolean interrupted) -> {
-                   follower.breakFollowing();
-                })
-                .setIsDone(()->controlSystem.isWithinTolerance(new KineticState(Math.toRadians(4))))
+                .setStop((Boolean interrupted) -> follower.breakFollowing())
+                .setIsDone(this::isAtTargetHeading)
                 .requires(this);
+    }
+
+    public void resetPID(){
+        headingController.reset();
     }
 
     public void initPedro(boolean isAuto, Pose starting) {
@@ -192,7 +188,7 @@ public class Chassis implements Subsystem {
 
         double continuousTarget = robotHeading + error;
 
-        controlSystem.setGoal(new KineticState(continuousTarget));
+        headingController.setTargetPosition(continuousTarget);
     }
 
 }

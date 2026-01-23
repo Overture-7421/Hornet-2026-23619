@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.utils;
 
 import com.pedropathing.geometry.Pose;
 
-import org.firstinspires.ftc.teamcode.subsystems.Camera;
 import org.firstinspires.ftc.teamcode.subsystems.Chassis;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
@@ -12,6 +11,7 @@ import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.delays.WaitUntil;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.ftc.Gamepads;
 
 public class Robot {
@@ -58,18 +58,6 @@ public class Robot {
         Gamepads.gamepad1().rightBumper()
                 .whenTrue(Intake.INSTANCE.reverseIntake())
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
-
-        // Gamepad 2
-        Gamepads.gamepad2().a()
-                .whenBecomesTrue(()->{
-                    Camera.INSTANCE.isMt2 = true;
-                });
-
-        Gamepads.gamepad2().b()
-                .whenBecomesTrue(()->{
-                    Camera.INSTANCE.isMt2 = false;
-                });
-
     }
 
     public Command stopShooting(){
@@ -101,8 +89,11 @@ public class Robot {
     public Command automaticShoot(){
         return new SequentialGroup(
                 Chassis.INSTANCE.selectTarget(),
-                new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
-                Shooter.INSTANCE.setShooter(),
+                new InstantCommand(()->Chassis.INSTANCE.resetPID()),
+                new ParallelGroup(
+                        new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
+                        Shooter.INSTANCE.setShooter()
+                ),
                 Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
