@@ -25,14 +25,16 @@ public class Chassis implements Subsystem {
     public PIDFController headingController = new PIDFController(pidValues);
     private Follower follower;
     public double speedMultiplier;
-    public double turnMultiplier;
+    public double turnMultiplier = -0.7;
     private double allianceMultiplier = -1;
     public  Pose target = new Pose(0,0);
     public Pose nearTarget2 = new Pose(0,0);
     public Pose nearTarget = new Pose(4, 140);
     public Pose farTarget2 = new Pose(0,0);
     public Pose farTarget = new Pose(4, 140);
-
+    private int stableFrames = 0;
+    private static final int REQUIRED_STABLE_FRAMES = 10;
+    public boolean isAlignOn = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
     private Chassis() {
@@ -73,6 +75,19 @@ public class Chassis implements Subsystem {
         });
     }
 
+    private double calculateAlignmentTurn() {
+        updateHeadingGoal();
+        headingController.updatePosition(follower.getHeading());
+        double maxSpeed = Math.abs(turnMultiplier);
+        double turn = Math.max(-maxSpeed, Math.min(maxSpeed, headingController.run()));
+
+        if (Math.abs(turn) < 0.05) {
+            turn = 0;
+        }
+
+        return turn;
+    }
+
     public Command drive() {
         return new LambdaCommand()
                 .setStart(() -> follower.startTeleopDrive(true))
@@ -87,11 +102,10 @@ public class Chassis implements Subsystem {
                         speedMultiplier = 1;
                     }
 
-                    if (ActiveOpMode.gamepad1().left_trigger > 0.4) {
-                        updateHeadingGoal();
-                        headingController.updatePosition(follower.getHeading());
-                        turn = headingController.run();
+                    if (isAlignOn) {
+                        turn = calculateAlignmentTurn();
                     } else {
+                        stableFrames = 0;
                         turn = ActiveOpMode.gamepad1().right_stick_x * turnMultiplier;
                     }
 
@@ -116,9 +130,7 @@ public class Chassis implements Subsystem {
                     resetPID();
                 })
                 .setUpdate(() -> {
-                    updateHeadingGoal();
-                    headingController.updatePosition(follower.getHeading());
-                    double turn = headingController.run();
+                    double turn = calculateAlignmentTurn();
 
                     follower.setTeleOpDrive(
                             0,
@@ -134,6 +146,7 @@ public class Chassis implements Subsystem {
 
     public void resetPID(){
         headingController.reset();
+        stableFrames = 0;
     }
 
     public void initPedro(boolean isAuto, Pose starting) {
@@ -141,8 +154,6 @@ public class Chassis implements Subsystem {
 
         if (PoseStorage.currentPose != null && !isAuto) {
             follower.setPose(PoseStorage.currentPose);
-        } else if (!isAuto) {
-            follower.setPose(starting);
         } else {
             follower.setPose(starting);
         }
@@ -166,7 +177,13 @@ public class Chassis implements Subsystem {
     }
 
     public boolean isAtTargetHeading() {
-        return getError() < Math.toRadians(2);
+        if (getError() < Math.toRadians(3.5)) {
+            stableFrames++;
+            return stableFrames >= REQUIRED_STABLE_FRAMES;
+        } else {
+            stableFrames = 0;
+            return false;
+        }
     }
 
     public double getDistanceToTarget() {

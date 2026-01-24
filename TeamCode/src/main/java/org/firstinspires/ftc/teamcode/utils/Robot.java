@@ -60,12 +60,7 @@ public class Robot {
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
     }
 
-    public Command stopShooting(){
-        return new ParallelGroup(
-                Shooter.INSTANCE.stopShooter(),
-                Intake.INSTANCE.stopCommand()
-        ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
-    }
+
 
     public Command shootAutonomous(){
         return new SequentialGroup(
@@ -86,15 +81,27 @@ public class Robot {
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE);
     }
 
+    public Command stopShooting(){
+        return new ParallelGroup(
+                new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = false),
+                Shooter.INSTANCE.stopShooter(),
+                Intake.INSTANCE.stopCommand()
+        ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
+    }
+
     public Command automaticShoot(){
         return new SequentialGroup(
-                Chassis.INSTANCE.selectTarget(),
-                new InstantCommand(()->Chassis.INSTANCE.resetPID()),
+                new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = true),
+                new ParallelGroup(
+                        Chassis.INSTANCE.selectTarget(),
+                        new InstantCommand(()->Chassis.INSTANCE.resetPID())
+                ),
                 new ParallelGroup(
                         new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
                         Shooter.INSTANCE.setShooter()
                 ),
-                Intake.INSTANCE.shootCommand()
+                Intake.INSTANCE.shootCommand(),
+                new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = false)
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
 
