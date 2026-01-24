@@ -21,7 +21,7 @@ import dev.nextftc.ftc.ActiveOpMode;
 @Configurable
 public class Chassis implements Subsystem {
     public static Chassis INSTANCE = new Chassis();
-    public PIDFCoefficients pidValues = new PIDFCoefficients(0.3, 0.0, 0.0,0.0);
+    public PIDFCoefficients pidValues = new PIDFCoefficients(0.6, 0.0, 0.001,0.0);
     public PIDFController headingController = new PIDFController(pidValues);
     private Follower follower;
     public double speedMultiplier;
@@ -166,7 +166,7 @@ public class Chassis implements Subsystem {
     }
 
     public boolean isAtTargetHeading() {
-        return getError() < Math.toRadians(3);
+        return getError() < Math.toRadians(2);
     }
 
     public double getDistanceToTarget() {
