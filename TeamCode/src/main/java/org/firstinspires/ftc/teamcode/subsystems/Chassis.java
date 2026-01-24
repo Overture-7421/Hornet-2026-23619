@@ -21,7 +21,7 @@ import dev.nextftc.ftc.ActiveOpMode;
 @Configurable
 public class Chassis implements Subsystem {
     public static Chassis INSTANCE = new Chassis();
-    public PIDFCoefficients pidValues = new PIDFCoefficients(0.6, 0.0, 0.001,0.0);
+    public PIDFCoefficients pidValues = new PIDFCoefficients(0.95, 0.0, 0.15,0.0);
     public PIDFController headingController = new PIDFController(pidValues);
     private Follower follower;
     public double speedMultiplier;
@@ -31,7 +31,7 @@ public class Chassis implements Subsystem {
     public Pose nearTarget2 = new Pose(0,0);
     public Pose nearTarget = new Pose(4, 140);
     public Pose farTarget2 = new Pose(0,0);
-    public Pose farTarget = new Pose(7, 140);
+    public Pose farTarget = new Pose(4, 140);
 
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
