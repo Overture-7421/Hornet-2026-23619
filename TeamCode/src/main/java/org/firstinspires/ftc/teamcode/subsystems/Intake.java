@@ -86,7 +86,7 @@ public class Intake implements Subsystem {
                         topMotor.setPower(0);
                         intakeMotor.setPower(1);
                     } else {
-                        topMotor.setPower(0.3);
+                        topMotor.setPower(1);
                         intakeMotor.setPower(1);
                     }
                 }

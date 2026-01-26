@@ -47,8 +47,8 @@ public class Chassis implements Subsystem {
         telemetry.addData("DistanceToTarget", getDistanceToTarget());
         telemetry.addData("CurrentHeading", Math.toDegrees(follower.getHeading()));
         telemetry.addData("TargetHeading", Math.toDegrees(calculateHeading(target)));
-//        telemetry.addData("ChassisPos", follower.getPose());
-        telemetry.addData("Is at target", Chassis.INSTANCE.isAtTargetHeading());
+        telemetry.addData("ChassisPos", follower.getPose());
+//        telemetry.addData("Is at target", Chassis.INSTANCE.isAtTargetHeading());
     }
 
     public void setAllianceColor(Alliance allianceColor, boolean isAuto) {
