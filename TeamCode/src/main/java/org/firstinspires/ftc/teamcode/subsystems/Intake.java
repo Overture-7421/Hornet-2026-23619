@@ -12,12 +12,14 @@ import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.impl.MotorEx;
+import dev.nextftc.hardware.impl.ServoEx;
 
 public class Intake implements Subsystem {
 
     public static Intake INSTANCE = new Intake();
     private MotorEx intakeMotor;
     private MotorEx topMotor;
+    private ServoEx limitServo;
     private ColorRangeSensor topSensor;
     private boolean autoIntake = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
@@ -28,7 +30,7 @@ public class Intake implements Subsystem {
     public void initialize(){
         intakeMotor = new MotorEx("intake").brakeMode();
         topMotor = new MotorEx("upMotor").brakeMode().reversed();
-
+        limitServo = new ServoEx("tope");
         topSensor = ActiveOpMode.hardwareMap().get(ColorRangeSensor.class, "upSensor");
 
         autoIntake = false;
@@ -104,5 +106,14 @@ public class Intake implements Subsystem {
             autoIntake = false;
         });
     }
-
+    public Command openServo() {
+        return new InstantCommand(() -> {
+           limitServo.setPosition(1);
+        });
+    }
+    public Command closeServo() {
+        return new InstantCommand(() -> {
+            limitServo.setPosition(-1);
+        });
+    }
 }
