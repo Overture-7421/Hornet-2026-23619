@@ -154,6 +154,8 @@ public class Chassis implements Subsystem {
 
         if (PoseStorage.currentPose != null && !isAuto) {
             follower.setPose(PoseStorage.currentPose);
+        } else if (!isAuto) {
+            follower.setPose(starting);
         } else {
             follower.setPose(starting);
         }

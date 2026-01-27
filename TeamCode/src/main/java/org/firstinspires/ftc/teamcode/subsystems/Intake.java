@@ -13,6 +13,7 @@ import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.impl.MotorEx;
 import dev.nextftc.hardware.impl.ServoEx;
+import dev.nextftc.hardware.positionable.SetPosition;
 
 public class Intake implements Subsystem {
 
@@ -83,13 +84,16 @@ public class Intake implements Subsystem {
     
     public Command intakeCommand(){
         return new LambdaCommand()
+                .setStart(()->{
+                    limitServo.setPosition(-1);
+                })
                 .setUpdate(() -> {
                     if (checkTopSensor()) {
                         topMotor.setPower(0);
-                        intakeMotor.setPower(1);
+                        intakeMotor.setPower(0.8);
                     } else {
-                        topMotor.setPower(1);
-                        intakeMotor.setPower(1);
+                        topMotor.setPower(0.5);
+                        intakeMotor.setPower(0.8);
                     }
                 }
                 ).requires(this);
@@ -107,13 +111,17 @@ public class Intake implements Subsystem {
         });
     }
     public Command openServo() {
-        return new InstantCommand(() -> {
-           limitServo.setPosition(1);
-        });
+        return new LambdaCommand()
+                .setStart(() -> {
+                    limitServo.setPosition(1);
+                })
+                .setIsDone(()->true);
     }
     public Command closeServo() {
-        return new InstantCommand(() -> {
-            limitServo.setPosition(-1);
-        });
+        return new LambdaCommand()
+                .setStart(() -> {
+                    limitServo.setPosition(-1);
+                })
+                .setIsDone(()->true);
     }
 }
