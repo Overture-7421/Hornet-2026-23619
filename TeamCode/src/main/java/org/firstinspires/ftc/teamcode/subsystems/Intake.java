@@ -20,7 +20,7 @@ public class Intake implements Subsystem {
     public static Intake INSTANCE = new Intake();
     private MotorEx intakeMotor;
     private MotorEx topMotor;
-    private ServoEx limitServo;
+
     private ColorRangeSensor topSensor;
     private boolean autoIntake = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
@@ -31,7 +31,7 @@ public class Intake implements Subsystem {
     public void initialize(){
         intakeMotor = new MotorEx("intake").brakeMode();
         topMotor = new MotorEx("upMotor").brakeMode().reversed();
-        limitServo = new ServoEx("tope");
+
         topSensor = ActiveOpMode.hardwareMap().get(ColorRangeSensor.class, "upSensor");
 
         autoIntake = false;
@@ -84,9 +84,6 @@ public class Intake implements Subsystem {
     
     public Command intakeCommand(){
         return new LambdaCommand()
-                .setStart(()->{
-                    limitServo.setPosition(-1);
-                })
                 .setUpdate(() -> {
                     if (checkTopSensor()) {
                         topMotor.setPower(0);
@@ -109,19 +106,5 @@ public class Intake implements Subsystem {
         return new InstantCommand(()->{
             autoIntake = false;
         });
-    }
-    public Command openServo() {
-        return new LambdaCommand()
-                .setStart(() -> {
-                    limitServo.setPosition(1);
-                })
-                .setIsDone(()->true);
-    }
-    public Command closeServo() {
-        return new LambdaCommand()
-                .setStart(() -> {
-                    limitServo.setPosition(-1);
-                })
-                .setIsDone(()->true);
     }
 }

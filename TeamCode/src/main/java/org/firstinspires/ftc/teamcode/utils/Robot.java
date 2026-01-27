@@ -50,10 +50,10 @@ public class Robot {
                 .whenBecomesTrue(manualShootFar())
                 .whenBecomesFalse(stopShooting());
         Gamepads.gamepad1().rightTrigger().greaterThan(0.3)
-                .whenBecomesTrue(startIntake())
-                .whenBecomesFalse(stopIntake());
+                .whenBecomesTrue(Intake.INSTANCE.intakeCommand())
+                .whenBecomesFalse(Intake.INSTANCE.stopCommand());
         Gamepads.gamepad1().x()
-                .whenTrue(spitArtefacts())
+                .whenTrue(Intake.INSTANCE.shootCommand())
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
         Gamepads.gamepad1().rightBumper()
                 .whenTrue(Intake.INSTANCE.reverseIntake())
@@ -119,23 +119,5 @@ public class Robot {
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
 
-    public Command startIntake(){
-        return new SequentialGroup(
-                Intake.INSTANCE.closeServo(),
-                new Delay(0.2),
-                Intake.INSTANCE.intakeCommand()
-        ).setRequirements(Intake.INSTANCE);
-    }
-    public Command stopIntake(){
-        return new ParallelGroup(
-                Intake.INSTANCE.stopCommand(),
-                Intake.INSTANCE.openServo()
-        ).setRequirements(Intake.INSTANCE);}
-    public Command spitArtefacts(){
-        return new SequentialGroup(
-                Intake.INSTANCE.openServo(),
-              Intake.INSTANCE.shootCommand()
 
-        ).setRequirements(Intake.INSTANCE);
-    }
 }
