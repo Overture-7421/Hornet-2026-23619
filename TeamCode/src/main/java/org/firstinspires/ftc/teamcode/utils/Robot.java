@@ -50,7 +50,7 @@ public class Robot {
                 .whenBecomesTrue(manualShootFar())
                 .whenBecomesFalse(stopShooting());
         Gamepads.gamepad1().rightTrigger().greaterThan(0.3)
-                .whenBecomesTrue(Intake.INSTANCE.intakeCommand())
+                .whenTrue(Intake.INSTANCE.intakeCommand())
                 .whenBecomesFalse(Intake.INSTANCE.stopCommand());
         Gamepads.gamepad1().x()
                 .whenTrue(Intake.INSTANCE.shootCommand())
@@ -95,10 +95,8 @@ public class Robot {
                         Chassis.INSTANCE.selectTarget(),
                         new InstantCommand(()->Chassis.INSTANCE.resetPID())
                 ),
-                new ParallelGroup(
-                        new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
-                        Shooter.INSTANCE.setShooter()
-                ),
+                new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
+                Shooter.INSTANCE.setShooter(),
                 Intake.INSTANCE.shootCommand(),
                 new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = false)
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);

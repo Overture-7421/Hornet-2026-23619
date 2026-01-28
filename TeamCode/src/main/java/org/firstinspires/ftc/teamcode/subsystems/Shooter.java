@@ -39,20 +39,20 @@ public class Shooter implements Subsystem {
     private final double offset = -10;
 
     private Shooter(){
-        shooterVelocities.put(35.0, 900.0);
-        shooterVelocities.put(45.0, 900.0);
-        shooterVelocities.put(55.0, 920.0);
+        shooterVelocities.put(35.0, 880.0);
+        shooterVelocities.put(45.0, 860.0);
+        shooterVelocities.put(55.0, 900.0);
         shooterVelocities.put(65.0, 920.0);
-        shooterVelocities.put(75.0, 980.0);
-        shooterVelocities.put(85.0, 1010.0);
-        shooterVelocities.put(95.0, 1060.0);
-        shooterVelocities.put(105.0, 1090.0);
+        shooterVelocities.put(75.0, 970.0);
+        shooterVelocities.put(85.0, 1000.0);
+        shooterVelocities.put(95.0, 1040.0);
+        shooterVelocities.put(105.0, 1080.0);
         shooterVelocities.put(115.0, 1130.0);
         shooterVelocities.put(125.0, 1170.0);
-        shooterVelocities.put(135.0, 1220.0);
-        shooterVelocities.put(145.0, 1250.0);
-        shooterVelocities.put(155.0, 1270.0);
-        shooterVelocities.put(163.0, 1300.0);
+        shooterVelocities.put(135.0, 1210.0);
+        shooterVelocities.put(145.0, 1240.0);
+        shooterVelocities.put(155.0, 1260.0);
+        shooterVelocities.put(160.0, 1280.0);
 
     }
 

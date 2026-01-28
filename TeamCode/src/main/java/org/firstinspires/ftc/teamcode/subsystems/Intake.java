@@ -44,11 +44,11 @@ public class Intake implements Subsystem {
 
         if (autoIntake){
             if (checkTopSensor()) {
-                topMotor.setPower(0);
-                intakeMotor.setPower(1);
+                topMotor.setPower(-0.1);
+                intakeMotor.setPower(0.8);
             } else {
-                topMotor.setPower(1);
-                intakeMotor.setPower(1);
+                topMotor.setPower(0.3);
+                intakeMotor.setPower(0.8);
             }
         }
     }
@@ -86,11 +86,11 @@ public class Intake implements Subsystem {
         return new LambdaCommand()
                 .setUpdate(() -> {
                     if (checkTopSensor()) {
-                        topMotor.setPower(0);
-                        intakeMotor.setPower(0.8);
+                        topMotor.setPower(-0.1);
+                        intakeMotor.setPower(0.7);
                     } else {
-                        topMotor.setPower(0.5);
-                        intakeMotor.setPower(0.8);
+                        topMotor.setPower(0.25);
+                        intakeMotor.setPower(0.7);
                     }
                 }
                 ).requires(this);
