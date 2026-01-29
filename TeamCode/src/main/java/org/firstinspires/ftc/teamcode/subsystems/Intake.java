@@ -54,7 +54,7 @@ public class Intake implements Subsystem {
     }
 
     private boolean checkTopSensor(){
-        return topSensor.getDistance(DistanceUnit.CM) < 5.3;
+        return topSensor.getDistance(DistanceUnit.CM) < 5;
     }
 
     public Command shootCommand(){
