@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.delays.WaitUntil;
+import dev.nextftc.core.commands.groups.ParallelDeadlineGroup;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
@@ -64,7 +65,7 @@ public class Robot {
 
     public Command shootAutonomous(){
         return new SequentialGroup(
-                Chassis.INSTANCE.selectTarget(),
+                selectTargets(),
                 Chassis.INSTANCE.autoAlign(),
                 Shooter.INSTANCE.setShooter(),
                 Intake.INSTANCE.shootCommand(),
@@ -91,11 +92,11 @@ public class Robot {
     public Command automaticShoot(){
         return new SequentialGroup(
                 new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = true),
-                new ParallelGroup(
-                        Chassis.INSTANCE.selectTarget(),
-                        new InstantCommand(()->Chassis.INSTANCE.resetPID())
+                selectTargets(),
+                new ParallelDeadlineGroup(
+                        new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
+                        Shooter.INSTANCE.slowShooter()
                 ),
-                new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
                 Shooter.INSTANCE.setShooter(),
                 Intake.INSTANCE.shootCommand(),
                 new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = false)
@@ -104,17 +105,25 @@ public class Robot {
 
     public Command manualShootNear(){
         return new SequentialGroup(
-                Chassis.INSTANCE.selectTarget(),
+                selectTargets(),
                 Shooter.INSTANCE.setShooterManualNear(),
                 Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
     public Command manualShootFar(){
         return new SequentialGroup(
-                Chassis.INSTANCE.selectTarget(),
+                selectTargets(),
                 Shooter.INSTANCE.setShooterManualFar(),
                 Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
+    }
+
+    public Command selectTargets(){
+        return new ParallelGroup(
+                new InstantCommand(()->Chassis.INSTANCE.resetPID()),
+                Chassis.INSTANCE.selectTarget(),
+                Shooter.INSTANCE.selectTarget()
+        );
     }
 
 

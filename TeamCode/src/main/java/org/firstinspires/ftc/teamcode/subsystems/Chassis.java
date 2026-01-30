@@ -29,7 +29,7 @@ public class Chassis implements Subsystem {
     private double allianceMultiplier = -1;
     public  Pose target = new Pose(0,0);
     public Pose nearTarget2 = new Pose(0,0);
-    public Pose nearTarget = new Pose(4, 140);
+    public Pose nearTarget = new Pose(6, 138);
     public Pose farTarget2 = new Pose(0,0);
     public Pose farTarget = new Pose(4, 140);
     private int stableFrames = 0;

@@ -13,6 +13,7 @@ import dev.nextftc.control.KineticState;
 import dev.nextftc.control.feedback.PIDCoefficients;
 import dev.nextftc.control.feedforward.BasicFeedforwardParameters;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.MotorGroup;
@@ -31,12 +32,12 @@ public class Shooter implements Subsystem {
     public double manualNear = 1000;
     public double manualFar = 1200;
     public InterpolatableMap shooterVelocities = new InterpolatableMap();
-
     private long stableSince = 0;
     private static final long STABLE_NS = 120_000_000; // 120ms
     private static final double TOL = 30;
-
     private final double offset = -10;
+    private double targetOffset = -2.5;
+
 
     private Shooter(){
         shooterVelocities.put(35.0, 880.0);
@@ -71,12 +72,22 @@ public class Shooter implements Subsystem {
         telemetry.update();
     }
 
+    public Command selectTarget(){
+        return new InstantCommand(()->{
+            if (Chassis.INSTANCE.getDistanceToTarget() > 122){
+                targetOffset = 0;
+            } else {
+                targetOffset = 2.5;
+            }
+        });
+    }
+
     public Command stopShooter(){
         return new RunToVelocity(controlSystem, 0, 10).setRequirements(this);
     }
 
     public Command slowShooter(){
-        return new RunToVelocity(controlSystem, 600, 10).setRequirements(this);
+        return new RunToVelocity(controlSystem, 1050, 10).setRequirements(this);
     }
 
     public boolean isAtSpeed(double target) {
@@ -98,11 +109,11 @@ public class Shooter implements Subsystem {
                 .setUpdate(()->controlSystem.setGoal(
                         new KineticState(
                                 0,
-                                shooterVelocities.interpolate(Chassis.INSTANCE.getDistanceToTarget()) + offset,
+                                shooterVelocities.interpolate(Chassis.INSTANCE.getDistanceToTarget()-targetOffset) + offset,
                                 0)))
                 .setIsDone(()-> isAtSpeed(
                         shooterVelocities.interpolate(
-                                Chassis.INSTANCE.getDistanceToTarget()
+                                Chassis.INSTANCE.getDistanceToTarget()-targetOffset
                         ) + offset
                 ))
                 .requires(this);
