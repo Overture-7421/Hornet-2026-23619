@@ -65,7 +65,7 @@ public class Robot {
 
     public Command shootAutonomous(){
         return new SequentialGroup(
-                selectTargets(),
+                new InstantCommand(()->Chassis.INSTANCE.resetPID()),
                 Chassis.INSTANCE.autoAlign(),
                 Shooter.INSTANCE.setShooter(),
                 Intake.INSTANCE.shootCommand(),
@@ -92,39 +92,27 @@ public class Robot {
     public Command automaticShoot(){
         return new SequentialGroup(
                 new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = true),
-                selectTargets(),
+                new InstantCommand(()->Chassis.INSTANCE.resetPID()),
                 new ParallelDeadlineGroup(
                         new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
                         Shooter.INSTANCE.slowShooter()
                 ),
+                new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = false),
                 Shooter.INSTANCE.setShooter(),
-                Intake.INSTANCE.shootCommand(),
-                new InstantCommand(() -> Chassis.INSTANCE.isAlignOn = false)
+                Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
 
     public Command manualShootNear(){
         return new SequentialGroup(
-                selectTargets(),
                 Shooter.INSTANCE.setShooterManualNear(),
                 Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
     public Command manualShootFar(){
         return new SequentialGroup(
-                selectTargets(),
                 Shooter.INSTANCE.setShooterManualFar(),
                 Intake.INSTANCE.shootCommand()
         ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE);
     }
-
-    public Command selectTargets(){
-        return new ParallelGroup(
-                new InstantCommand(()->Chassis.INSTANCE.resetPID()),
-                Chassis.INSTANCE.selectTarget(),
-                Shooter.INSTANCE.selectTarget()
-        );
-    }
-
-
 }

@@ -49,16 +49,6 @@ public class Camera implements Subsystem {
         LLResult result = limelight.getLatestResult();
         if (result == null || !result.isValid()) return;
 
-//        boolean ok = false;
-//        for (FiducialResult fid : result.getFiducialResults()) {
-//            int id = fid.getFiducialId();
-//            if (id == 20 || id == 24) {
-//                ok = true;
-//                break;
-//            }
-//        }
-//        if (!ok) return;
-
         Pose3D robotPose = result.getBotpose(); // MT1 only
         Position posePos = robotPose.getPosition().toUnit(DistanceUnit.INCH);
         double poseHeading = robotPose.getOrientation().getYaw(AngleUnit.RADIANS);

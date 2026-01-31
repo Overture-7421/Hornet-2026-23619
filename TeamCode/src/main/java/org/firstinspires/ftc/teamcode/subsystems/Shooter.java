@@ -35,8 +35,8 @@ public class Shooter implements Subsystem {
     private long stableSince = 0;
     private static final long STABLE_NS = 120_000_000; // 120ms
     private static final double TOL = 30;
-    private final double offset = -10;
-    private double targetOffset = -2.5;
+    private final double offset = 0;
+    private double targetOffset = 0;
 
 
     private Shooter(){
@@ -72,15 +72,6 @@ public class Shooter implements Subsystem {
         telemetry.update();
     }
 
-    public Command selectTarget(){
-        return new InstantCommand(()->{
-            if (Chassis.INSTANCE.getDistanceToTarget() > 122){
-                targetOffset = 0;
-            } else {
-                targetOffset = 2.5;
-            }
-        });
-    }
 
     public Command stopShooter(){
         return new RunToVelocity(controlSystem, 0, 10).setRequirements(this);
@@ -109,11 +100,11 @@ public class Shooter implements Subsystem {
                 .setUpdate(()->controlSystem.setGoal(
                         new KineticState(
                                 0,
-                                shooterVelocities.interpolate(Chassis.INSTANCE.getDistanceToTarget()-targetOffset) + offset,
+                                shooterVelocities.interpolate(Chassis.INSTANCE.getDistanceToTarget()) + offset,
                                 0)))
                 .setIsDone(()-> isAtSpeed(
                         shooterVelocities.interpolate(
-                                Chassis.INSTANCE.getDistanceToTarget()-targetOffset
+                                Chassis.INSTANCE.getDistanceToTarget()
                         ) + offset
                 ))
                 .requires(this);

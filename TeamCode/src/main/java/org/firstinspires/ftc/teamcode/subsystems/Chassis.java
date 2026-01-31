@@ -29,11 +29,11 @@ public class Chassis implements Subsystem {
     private double allianceMultiplier = -1;
     public  Pose target = new Pose(0,0);
     public Pose nearTarget2 = new Pose(0,0);
-    public Pose nearTarget = new Pose(6, 138);
+    public Pose nearTarget = new Pose(4, 140);
     public Pose farTarget2 = new Pose(0,0);
     public Pose farTarget = new Pose(4, 140);
     private int stableFrames = 0;
-    private static final int REQUIRED_STABLE_FRAMES = 10;
+    private static final int REQUIRED_STABLE_FRAMES = 50;
     public boolean isAlignOn = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
@@ -63,16 +63,6 @@ public class Chassis implements Subsystem {
             nearTarget2 = nearTarget.mirror();
             farTarget2 = farTarget.mirror();
         }
-    }
-
-    public Command selectTarget(){ 
-        return new InstantCommand(()->{
-            if (getDistanceToTarget() > 122){
-                target = farTarget2;
-            } else {
-                target = nearTarget2;
-            }
-        });
     }
 
     private double calculateAlignmentTurn() {
@@ -179,7 +169,7 @@ public class Chassis implements Subsystem {
     }
 
     public boolean isAtTargetHeading() {
-        if (getError() < Math.toRadians(3.5)) {
+        if (getError() < Math.toRadians(3)) {
             stableFrames++;
             return stableFrames >= REQUIRED_STABLE_FRAMES;
         } else {
