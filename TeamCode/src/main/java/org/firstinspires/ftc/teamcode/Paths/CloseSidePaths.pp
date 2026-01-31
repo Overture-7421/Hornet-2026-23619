@@ -161,34 +161,16 @@
     {
       "name": "Path 8",
       "endPoint": {
-        "x": 54.19891736483906,
-        "y": 89.30985377686935,
+        "x": 53.85768513735091,
+        "y": 107.56577794748546,
         "heading": "linear",
         "reverse": false,
         "startDeg": 180,
-        "endDeg": 138
+        "endDeg": 142
       },
       "controlPoints": [],
       "color": "#CC9758",
       "id": "line-y7ewsz6cde",
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
-      "name": "Path 9",
-      "endPoint": {
-        "x": 37.16965027739719,
-        "y": 78.17533298892657,
-        "heading": "linear",
-        "reverse": false,
-        "startDeg": 138,
-        "endDeg": 140
-      },
-      "controlPoints": [],
-      "color": "#7DA95D",
-      "id": "line-d0udw7rybm8",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
@@ -228,10 +210,6 @@
     {
       "kind": "path",
       "lineId": "line-y7ewsz6cde"
-    },
-    {
-      "kind": "path",
-      "lineId": "line-d0udw7rybm8"
     }
   ],
   "settings": {
@@ -255,5 +233,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-01-15T00:34:15.054Z"
+  "timestamp": "2026-01-31T17:05:29.169Z"
 }

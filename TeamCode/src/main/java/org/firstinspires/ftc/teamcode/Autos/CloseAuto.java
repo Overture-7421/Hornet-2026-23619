@@ -65,7 +65,7 @@ public class CloseAuto extends NextFTCOpMode {
         return new SequentialGroup(
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.path1, false, 0.7),
-                        Shooter.INSTANCE.stopShooter()
+                        Shooter.INSTANCE.slowShooter()
                 ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
@@ -76,8 +76,11 @@ public class CloseAuto extends NextFTCOpMode {
                 Intake.INSTANCE.intakeAutoOff(),
                 Intake.INSTANCE.stopCommand(),
                 new FollowPath(paths.Path3,false, 0.65),
-                new Delay(0.8),
-                new FollowPath(paths.Path4,false, 0.75),
+                new Delay(0.4),
+                new ParallelDeadlineGroup(
+                        new FollowPath(paths.Path4,false, 0.75),
+                        Shooter.INSTANCE.slowShooter()
+                ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path5, false, 0.7),
@@ -86,7 +89,10 @@ public class CloseAuto extends NextFTCOpMode {
                 ),
                 Intake.INSTANCE.intakeAutoOff(),
                 Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path6),
+                new ParallelDeadlineGroup(
+                        new FollowPath(paths.Path6,false),
+                        Shooter.INSTANCE.slowShooter()
+                ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path7, false, 1.0),
@@ -95,11 +101,14 @@ public class CloseAuto extends NextFTCOpMode {
                 ),
                 Intake.INSTANCE.intakeAutoOff(),
                 Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path8, false),
+                new ParallelDeadlineGroup(
+                        new FollowPath(paths.Path8, false),
+
+                        Shooter.INSTANCE.slowShooter()
+                ),
                 robot.shootAutonomous(),
                 new ParallelGroup(
                         Shooter.INSTANCE.stopShooter(),
-                        new FollowPath(paths.Path9, false, 0.8),
                         Intake.INSTANCE.stopCommand()
                 )
 
