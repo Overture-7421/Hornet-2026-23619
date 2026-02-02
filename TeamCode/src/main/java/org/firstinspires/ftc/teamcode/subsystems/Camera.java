@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
+import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.ActiveOpMode;
 
+@Configurable
 public class Camera implements Subsystem {
     public static Camera INSTANCE = new Camera();
     private Limelight3A limelight;
@@ -21,7 +23,7 @@ public class Camera implements Subsystem {
     private static final double CLOSE_HEADING_BLEND = 0.6;
 
     private static final double FAR_POSITION_BLEND = 0.4;
-    private static final double FAR_HEADING_BLEND = 0.1;
+    private static final double FAR_HEADING_BLEND = 0.9;
     private static final double CLOSE_DISTANCE_THRESHOLD = 120.0;  // inches
 
     private Camera() {}

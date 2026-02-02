@@ -77,32 +77,7 @@ public class FarAuto extends NextFTCOpMode {
                 ),
                 new Delay(0.5),
                 Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path3, false, 0.8),
-                Intake.INSTANCE.intakeAutoOn(),
-                new FollowPath(paths.Path4, false, 0.8),
-                new Delay(0.5),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path5),
-                robot.shootAutonomousFar(),
-                new ParallelGroup(
-                        Shooter.INSTANCE.stopShooter(),
-                        new FollowPath(paths.Path6, false, 0.8),
-                        Intake.INSTANCE.stopCommand()
-                ),
-                new Delay(3),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path7, false, 0.7),
-                        Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter()
-                ),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path8, false, 0.7),
-                robot.shootAutonomousFar(),
-                Shooter.INSTANCE.stopShooter(),
-                new FollowPath(paths.Path9, false, 0.7)
+                Intake.INSTANCE.stopCommand()
         );
     }
 }

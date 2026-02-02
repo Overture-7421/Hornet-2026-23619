@@ -95,7 +95,7 @@ public class Robot {
                 new InstantCommand(()->Chassis.INSTANCE.resetFrames()),
                 new ParallelDeadlineGroup(
                         new WaitUntil(()->Chassis.INSTANCE.isAtTargetHeading()),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.setShooter()
                 ),
                 Shooter.INSTANCE.setShooter(),
                 Intake.INSTANCE.shootCommand(),

@@ -35,7 +35,7 @@ public class Shooter implements Subsystem {
     private long stableSince = 0;
     private static final long STABLE_NS = 120_000_000; // 120ms
     private static final double TOL = 30;
-    private final double offset = 0;
+    private final double offset = 15;
 
 
     private Shooter(){
@@ -64,7 +64,7 @@ public class Shooter implements Subsystem {
     @Override
     public void periodic(){
         telemetry.addData("Ticks Speed", shooterMotors.getState().getVelocity());
-        telemetry.addData("Goal Speed", controlSystem.getGoal().getVelocity());
+        telemetry.addData("Goal Speed", controlSystem.getGoal().getVelocity() + offset);
 
         shooterMotors.setPower(controlSystem.calculate(shooterMotors.getState()));
 

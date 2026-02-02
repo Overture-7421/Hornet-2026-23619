@@ -25,8 +25,9 @@ public class Chassis implements Subsystem {
     public Pose target = new Pose(8,136);
     public Pose pastTarget = new Pose(8,136);
     private int stableFrames = 0;
-    public double alignMinSpeed = 0.15;
+    public double alignMinSpeed = 0.1;
     public double alignMaxSpeed = 1.0;
+    public double deadband = 3.0;
     private static final int REQUIRED_STABLE_FRAMES = 20;
     public boolean isAlignOn = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
@@ -60,9 +61,9 @@ public class Chassis implements Subsystem {
         double errorRad = getSignedError();
         double errorDeg = Math.abs(Math.toDegrees(errorRad));
 
-        if (errorDeg < 2) return 0;
+        if (errorDeg < deadband) return 0;
 
-        double speed = Math.max(alignMinSpeed, Math.min(alignMaxSpeed, errorDeg / 70));
+        double speed = Math.max(alignMinSpeed, Math.min(alignMaxSpeed, errorDeg / 90));
 
         return speed * Math.signum(errorRad);
     }
@@ -163,7 +164,7 @@ public class Chassis implements Subsystem {
     }
 
     public boolean isAtTargetHeading() {
-        if (Math.toDegrees(getError()) < 2) {
+        if (Math.toDegrees(getError()) < deadband) {
             stableFrames++;
             return stableFrames >= REQUIRED_STABLE_FRAMES;
         } else {

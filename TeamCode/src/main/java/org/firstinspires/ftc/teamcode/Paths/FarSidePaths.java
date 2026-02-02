@@ -4,7 +4,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 
 import org.firstinspires.ftc.teamcode.utils.MirrorPaths;
@@ -14,8 +13,6 @@ public class FarSidePaths extends MirrorPaths {
 
     public PathChain Path1;
     public PathChain Path2;
-    public PathChain Path2PlayOffs;
-
     public PathChain Path3;
     public PathChain Path4;
     public PathChain Path5;
@@ -23,6 +20,8 @@ public class FarSidePaths extends MirrorPaths {
     public PathChain Path7;
     public PathChain Path8;
     public PathChain Path9;
+    public PathChain Path10;
+
     public Pose startPose;
 
     public FarSidePaths(Follower follower, Alliance allianceColor) {
@@ -52,40 +51,18 @@ public class FarSidePaths extends MirrorPaths {
                 .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(180)))
                 .build();
 
-        Path2PlayOffs = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                mirrorPose(new Pose(56.316, 16.294)),
-                                mirrorPose(new Pose(9.896, 8.019))
-                        )
-                )
-                .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(180)))
-                .build();
-
         Path3 = follower
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
                                 mirrorPose(new Pose(9.896, 8.019)),
-                                mirrorPose(new Pose(19.791, 8.531))
-                        )
-                )
-                .setConstantHeadingInterpolation((mirrorHeading(180)))
-                .build();
-
-        Path4 = follower
-                .pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                mirrorPose(new Pose(19.791, 8.531)),
                                 mirrorPose(new Pose(9.555, 8.019))
                         )
                 )
                 .setConstantHeadingInterpolation((mirrorHeading(180)))
                 .build();
 
-        Path5 = follower
+        Path4 = follower
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
@@ -96,7 +73,7 @@ public class FarSidePaths extends MirrorPaths {
                 .setLinearHeadingInterpolation((mirrorHeading(180)), (mirrorHeading(110)))
                 .build();
 
-        Path6 = follower
+        Path5 = follower
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
@@ -107,7 +84,7 @@ public class FarSidePaths extends MirrorPaths {
                 .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(90)))
                 .build();
 
-        Path7 = follower
+        Path6 = follower
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
@@ -116,27 +93,53 @@ public class FarSidePaths extends MirrorPaths {
                                 mirrorPose(new Pose(62.964, 36.660)),
                                 mirrorPose(new Pose(17.445, 34.445))
                         )
-                ).setLinearHeadingInterpolation(mirrorHeading(90), mirrorHeading(180))
-
+                )
+                .setLinearHeadingInterpolation((mirrorHeading(90)), (mirrorHeading(180)))
                 .build();
 
-        Path8 = follower.pathBuilder().addPath(
+        Path7 = follower
+                .pathBuilder()
+                .addPath(
                         new BezierLine(
                                 mirrorPose(new Pose(17.445, 34.445)),
                                 mirrorPose(new Pose(57.839, 17.915))
                         )
-                ).setLinearHeadingInterpolation(mirrorHeading(180), mirrorHeading(110))
-
+                )
+                .setLinearHeadingInterpolation((mirrorHeading(180)), (mirrorHeading(110)))
                 .build();
 
-        Path9 = follower.pathBuilder().addPath(
-                        new BezierLine(
-                               mirrorPose( new Pose(57.839, 17.915)),
-
-                                mirrorPose(new Pose(44.869, 24.860))    
+        Path8 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierCurve(
+                                mirrorPose(new Pose(57.839, 17.915)),
+                                mirrorPose(new Pose(64.752, 60.326)),
+                                mirrorPose(new Pose(18.632, 59.647))
                         )
-                ).setTangentHeadingInterpolation()
+                )
+                .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(180)))
+                .build();
 
+        Path9 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                mirrorPose(new Pose(18.632, 59.647)),
+                                mirrorPose(new Pose(58.180, 18.938))
+                        )
+                )
+                .setLinearHeadingInterpolation((mirrorHeading(180)), (mirrorHeading(110)))
+                .build();
+
+        Path10 = follower
+                .pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                mirrorPose(new Pose(58.180, 18.938)),
+                                mirrorPose(new Pose(36.682, 17.232))
+                        )
+                )
+                .setConstantHeadingInterpolation((mirrorHeading(110)))
                 .build();
     }
 }

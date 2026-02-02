@@ -43,23 +43,6 @@
       "waitAfterName": ""
     },
     {
-      "name": "Path 3",
-      "endPoint": {
-        "x": 19.791469194312796,
-        "y": 8.530805687203792,
-        "heading": "constant",
-        "reverse": false,
-        "degrees": 180
-      },
-      "controlPoints": [],
-      "color": "#8797D6",
-      "id": "line-321zhtsuseg",
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
       "name": "Path 4",
       "endPoint": {
         "x": 9.554502369668247,
@@ -162,13 +145,55 @@
       "id": "mkgbrg0t-gakz1j",
       "name": "Path 9",
       "endPoint": {
-        "x": 43.54205607476635,
-        "y": 24.841121495327087,
-        "heading": "tangential",
-        "reverse": false
+        "x": 18.63210346813128,
+        "y": 59.64680869911856,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 110,
+        "endDeg": 180
+      },
+      "controlPoints": [
+        {
+          "x": 64.7520706914116,
+          "y": 60.32577401780571
+        }
+      ],
+      "color": "#96A689",
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "id": "line-ng181y8z0qh",
+      "endPoint": {
+        "x": 58.18009478672985,
+        "y": 18.938388625592417,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 180,
+        "endDeg": 110
       },
       "controlPoints": [],
-      "color": "#96A689",
+      "color": "#5C5766",
+      "locked": false,
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": ""
+    },
+    {
+      "id": "line-vt4kvptksp",
+      "endPoint": {
+        "x": 36.682464454976305,
+        "y": 17.232227488151665,
+        "heading": "constant",
+        "reverse": false,
+        "degrees": 110
+      },
+      "controlPoints": [],
+      "color": "#67D6D8",
+      "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
@@ -184,10 +209,6 @@
     {
       "kind": "path",
       "lineId": "line-9muzbiulwf7"
-    },
-    {
-      "kind": "path",
-      "lineId": "line-321zhtsuseg"
     },
     {
       "kind": "path",
@@ -212,6 +233,14 @@
     {
       "kind": "path",
       "lineId": "mkgbrg0t-gakz1j"
+    },
+    {
+      "kind": "path",
+      "lineId": "line-ng181y8z0qh"
+    },
+    {
+      "kind": "path",
+      "lineId": "line-vt4kvptksp"
     }
   ],
   "settings": {
@@ -235,5 +264,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-01-16T03:39:29.869Z"
+  "timestamp": "2026-02-02T07:13:59.103Z"
 }

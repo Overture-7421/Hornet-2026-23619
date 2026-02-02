@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Autos;
 
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
-import org.firstinspires.ftc.teamcode.Paths.FarSidePaths;
+import org.firstinspires.ftc.teamcode.Paths.FarSidePlayOffsPaths;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Chassis;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
@@ -24,7 +24,7 @@ import dev.nextftc.ftc.components.BulkReadComponent;
 
 public class FarPlayOffs extends NextFTCOpMode {
     private final Robot robot;
-    private FarSidePaths paths;
+    private FarSidePlayOffsPaths paths;
 
     public FarPlayOffs(Robot.Alliance allianceColor){
         robot = new Robot(allianceColor);
@@ -39,7 +39,7 @@ public class FarPlayOffs extends NextFTCOpMode {
     }
 
     public void onInit() {
-        paths = new FarSidePaths(follower(), robot.alliance);
+        paths = new FarSidePlayOffsPaths(follower(), robot.alliance);
 
         robot.initRobotAuto(paths.startPose);
     }
@@ -73,38 +73,7 @@ public class FarPlayOffs extends NextFTCOpMode {
                         new FollowPath(paths.Path2, false, 0.7),
                         Intake.INSTANCE.intakeAutoOn(),
                         Shooter.INSTANCE.stopShooter()
-                ),
-                new Delay(0.5),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path3, false, 0.8),
-                Intake.INSTANCE.intakeAutoOn(),
-                new FollowPath(paths.Path4, false, 0.8),
-                new Delay(0.5),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path5),
-                robot.shootAutonomousFar(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path2PlayOffs, false, 0.7),
-                        Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter()
-                ),
-                new Delay(0.5),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path3, false, 0.8),
-                Intake.INSTANCE.intakeAutoOn(),
-                new FollowPath(paths.Path4, false, 0.8),
-                new Delay(0.5),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path5),
-                robot.shootAutonomousFar(),
-                Intake.INSTANCE.stopCommand(),
-                Shooter.INSTANCE.stopShooter(),
-                new FollowPath(paths.Path6)
-
+                )
         );
     }
 }

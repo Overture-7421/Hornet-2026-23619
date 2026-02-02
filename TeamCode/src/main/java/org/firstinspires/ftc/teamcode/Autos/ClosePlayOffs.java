@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Autos;
 
-import org.firstinspires.ftc.teamcode.Paths.CloseSidePaths;
+import static dev.nextftc.extensions.pedro.PedroComponent.follower;
+
+import org.firstinspires.ftc.teamcode.Paths.ClosePlayOffsPaths;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Chassis;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.utils.Robot;
 import org.firstinspires.ftc.teamcode.utils.SubsystemComponent;
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 import dev.nextftc.bindings.BindingManager;
 import dev.nextftc.core.commands.delays.Delay;
@@ -21,12 +22,12 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-public class CloseAuto extends NextFTCOpMode {
+public class ClosePlayOffs extends NextFTCOpMode {
     private final Robot robot;
 
-    private CloseSidePaths paths;
+    private ClosePlayOffsPaths paths;
 
-    public CloseAuto(Robot.Alliance allianceColor){
+    public ClosePlayOffs(Robot.Alliance allianceColor){
         robot = new Robot(allianceColor);
 
         addComponents(
@@ -38,7 +39,7 @@ public class CloseAuto extends NextFTCOpMode {
     }
 
     public void onInit() {
-        paths = new CloseSidePaths(follower(), robot.alliance);
+        paths = new ClosePlayOffsPaths(follower(), robot.alliance);
 
         robot.initRobotAuto(paths.startPose);
 
@@ -64,7 +65,7 @@ public class CloseAuto extends NextFTCOpMode {
     public CommandGroup autoCommand(){
         return new SequentialGroup(
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.path1, false, 0.7),
+                        new FollowPath(paths.Path1, false, 0.7),
                         Shooter.INSTANCE.slowShooter()
                 ),
                 robot.shootAutonomous(),
@@ -72,47 +73,7 @@ public class CloseAuto extends NextFTCOpMode {
                         new FollowPath(paths.Path2,false, 0.7),
                         Intake.INSTANCE.intakeAutoOn(),
                         Shooter.INSTANCE.stopShooter()
-                ),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.Path3,false, 0.65),
-                new Delay(0.3),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path4,false, 0.75),
-                        Shooter.INSTANCE.slowShooter()
-                ),
-
-                robot.shootAutonomous(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path5, false, 0.7),
-                        Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter()
-                ),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path6,false),
-                        Shooter.INSTANCE.slowShooter()
-                ),
-                robot.shootAutonomous(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path7, false, 1.0),
-                        Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter()
-                ),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path8, false),
-
-                        Shooter.INSTANCE.slowShooter()
-                ),
-                robot.shootAutonomous(),
-                new ParallelGroup(
-                        Shooter.INSTANCE.stopShooter(),
-                        Intake.INSTANCE.stopCommand()
                 )
-
         );
     }
 }
