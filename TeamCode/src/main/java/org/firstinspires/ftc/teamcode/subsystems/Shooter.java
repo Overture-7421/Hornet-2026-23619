@@ -36,7 +36,6 @@ public class Shooter implements Subsystem {
     private static final long STABLE_NS = 120_000_000; // 120ms
     private static final double TOL = 30;
     private final double offset = 0;
-    private double targetOffset = 0;
 
 
     private Shooter(){

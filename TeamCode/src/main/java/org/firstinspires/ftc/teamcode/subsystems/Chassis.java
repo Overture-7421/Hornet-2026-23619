@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
-import com.pedropathing.control.PIDFCoefficients;
-import com.pedropathing.control.PIDFController;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
@@ -13,7 +11,6 @@ import org.firstinspires.ftc.teamcode.utils.PoseStorage;
 import org.firstinspires.ftc.teamcode.utils.Robot.Alliance;
 
 import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.ftc.ActiveOpMode;
@@ -21,19 +18,16 @@ import dev.nextftc.ftc.ActiveOpMode;
 @Configurable
 public class Chassis implements Subsystem {
     public static Chassis INSTANCE = new Chassis();
-    public PIDFCoefficients pidValues = new PIDFCoefficients(0.95, 0.0, 0.15,0.0);
-    public PIDFController headingController = new PIDFController(pidValues);
     private Follower follower;
     public double speedMultiplier;
     public double turnMultiplier = -0.7;
     private double allianceMultiplier = -1;
-    public  Pose target = new Pose(0,0);
-    public Pose nearTarget2 = new Pose(0,0);
-    public Pose nearTarget = new Pose(4, 140);
-    public Pose farTarget2 = new Pose(0,0);
-    public Pose farTarget = new Pose(4, 140);
+    public Pose target = new Pose(8,136);
+    public Pose pastTarget = new Pose(8,136);
     private int stableFrames = 0;
-    private static final int REQUIRED_STABLE_FRAMES = 50;
+    public double alignMinSpeed = 0.15;
+    public double alignMaxSpeed = 1.0;
+    private static final int REQUIRED_STABLE_FRAMES = 20;
     public boolean isAlignOn = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
@@ -54,28 +48,23 @@ public class Chassis implements Subsystem {
     public void setAllianceColor(Alliance allianceColor, boolean isAuto) {
         if (allianceColor == Alliance.Blue) {
             allianceMultiplier = -1;
-            target = nearTarget;
-            nearTarget2 = nearTarget;
-            farTarget2 = farTarget;
+            target = pastTarget;
         } else {
             allianceMultiplier = 1;
-            target = nearTarget.mirror();
-            nearTarget2 = nearTarget.mirror();
-            farTarget2 = farTarget.mirror();
+            pastTarget = target;
+            target = target.mirror();
         }
     }
 
     private double calculateAlignmentTurn() {
-        updateHeadingGoal();
-        headingController.updatePosition(follower.getHeading());
-        double maxSpeed = Math.abs(turnMultiplier);
-        double turn = Math.max(-maxSpeed, Math.min(maxSpeed, headingController.run()));
+        double errorRad = getSignedError();
+        double errorDeg = Math.abs(Math.toDegrees(errorRad));
 
-        if (Math.abs(turn) < 0.05) {
-            turn = 0;
-        }
+        if (errorDeg < 2) return 0;
 
-        return turn;
+        double speed = Math.max(alignMinSpeed, Math.min(alignMaxSpeed, errorDeg / 70));
+
+        return speed * Math.signum(errorRad);
     }
 
     public Command drive() {
@@ -117,7 +106,7 @@ public class Chassis implements Subsystem {
         return new LambdaCommand()
                 .setStart(() -> {
                     follower.startTeleopDrive(true);
-                    resetPID();
+                    resetFrames();
                 })
                 .setUpdate(() -> {
                     double turn = calculateAlignmentTurn();
@@ -134,8 +123,7 @@ public class Chassis implements Subsystem {
                 .requires(this);
     }
 
-    public void resetPID(){
-        headingController.reset();
+    public void resetFrames(){
         stableFrames = 0;
     }
 
@@ -157,19 +145,25 @@ public class Chassis implements Subsystem {
 
     public double calculateHeading(Pose tempTarget) {
         Pose robotPose = follower.getPose();
-        return Math.atan2(tempTarget.getY() - robotPose.getY(), tempTarget.getX() - robotPose.getX()
+        return Math.atan2(tempTarget.getY() - robotPose.getY(), tempTarget.getX() - robotPose.getX());
+    }
+
+    public double getSignedError() {
+        double targetHeading = calculateHeading(target);
+        double robotHeading = follower.getHeading();
+
+        return Math.atan2(
+                Math.sin(targetHeading - robotHeading),
+                Math.cos(targetHeading - robotHeading)
         );
     }
 
-    public double getError(){
-        return Math.abs(Math.atan2(
-                Math.sin(calculateHeading(target) - follower.getHeading()),
-                Math.cos(calculateHeading(target) - follower.getHeading())
-        ));
+    public double getError() {
+        return Math.abs(getSignedError());
     }
 
     public boolean isAtTargetHeading() {
-        if (getError() < Math.toRadians(3)) {
+        if (Math.toDegrees(getError()) < 2) {
             stableFrames++;
             return stableFrames >= REQUIRED_STABLE_FRAMES;
         } else {
@@ -177,7 +171,6 @@ public class Chassis implements Subsystem {
             return false;
         }
     }
-
     public double getDistanceToTarget() {
         return follower.getPose().distanceFrom(target);
     }
@@ -185,19 +178,4 @@ public class Chassis implements Subsystem {
     public void setLastPose() {
         PoseStorage.currentPose = follower.getPose();
     }
-
-    public void updateHeadingGoal() {
-        double robotHeading = follower.getHeading();
-        double targetHeading = calculateHeading(target);
-
-        double error = Math.atan2(
-                Math.sin(targetHeading - robotHeading),
-                Math.cos(targetHeading - robotHeading)
-        );
-
-        double continuousTarget = robotHeading + error;
-
-        headingController.setTargetPosition(continuousTarget);
-    }
-
 }
