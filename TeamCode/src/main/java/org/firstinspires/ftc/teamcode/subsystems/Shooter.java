@@ -77,7 +77,7 @@ public class Shooter implements Subsystem {
     }
 
     public Command slowShooter(){
-        return new RunToVelocity(controlSystem, 1050, 10).setRequirements(this);
+        return new RunToVelocity(controlSystem, 600, 10).setRequirements(this);
     }
 
     public boolean isAtSpeed(double target) {
