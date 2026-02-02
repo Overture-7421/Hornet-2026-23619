@@ -65,7 +65,7 @@ public class CloseAuto extends NextFTCOpMode {
         return new SequentialGroup(
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.path1, false, 0.7),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.setShooter()
                 ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
@@ -79,7 +79,7 @@ public class CloseAuto extends NextFTCOpMode {
                 new Delay(0.3),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path4,false, 0.75),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.setShooter()
                 ),
 
                 robot.shootAutonomous(),
@@ -92,7 +92,7 @@ public class CloseAuto extends NextFTCOpMode {
                 Intake.INSTANCE.stopCommand(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path6,false),
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.setShooter()
                 ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
@@ -104,8 +104,7 @@ public class CloseAuto extends NextFTCOpMode {
                 Intake.INSTANCE.stopCommand(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path8, false),
-
-                        Shooter.INSTANCE.slowShooter()
+                        Shooter.INSTANCE.setShooter()
                 ),
                 robot.shootAutonomous(),
                 new ParallelGroup(

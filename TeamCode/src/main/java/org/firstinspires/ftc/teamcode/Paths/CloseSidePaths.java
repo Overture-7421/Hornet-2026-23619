@@ -43,7 +43,7 @@ public class CloseSidePaths extends MirrorPaths {
                 .addPath(
                         new BezierCurve(
                                 mirrorPose(new Pose(47.773, 105.270)),
-                                mirrorPose(new Pose(50.782, 78.503)),
+                                mirrorPose(new Pose(57.607, 77.820)),
                                 mirrorPose(new Pose(22.228, 81.859))
                         )
                 )
@@ -55,7 +55,7 @@ public class CloseSidePaths extends MirrorPaths {
                 .addPath(
                         new BezierLine(
                                 mirrorPose(new Pose(22.228, 81.859)),
-                                mirrorPose(new Pose(20.147, 74.272))
+                                mirrorPose(new Pose(21.683, 73.930))
                         )
                 )
                 .setLinearHeadingInterpolation((mirrorHeading(180)), (mirrorHeading(90)))
@@ -65,8 +65,8 @@ public class CloseSidePaths extends MirrorPaths {
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
-                                mirrorPose(new Pose(20.147, 74.272)),
-                                mirrorPose(new Pose(52.848, 83.004))
+                                mirrorPose(new Pose(21.683, 73.930)),
+                                mirrorPose(new Pose(55.748, 84.369))
                         )
                 )
                 .setLinearHeadingInterpolation((mirrorHeading(90)), (mirrorHeading(132)))
@@ -76,8 +76,8 @@ public class CloseSidePaths extends MirrorPaths {
                 .pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                mirrorPose(new Pose(52.848, 83.004)),
-                                mirrorPose(new Pose(62.337, 55.962)),
+                                mirrorPose(new Pose(55.748, 84.369)),
+                                mirrorPose(new Pose(67.796, 50.844)),
                                 mirrorPose(new Pose(18.414, 57.857))
                         )
                 )
@@ -101,7 +101,7 @@ public class CloseSidePaths extends MirrorPaths {
                 .addPath(
                         new BezierCurve(
                                 mirrorPose(new Pose(52.493, 82.663)),
-                                mirrorPose(new Pose(63.979, 31.153)),
+                                mirrorPose(new Pose(69.951, 29.618)),
                                 mirrorPose(new Pose(17.765, 35.309))
                         )
                 )
