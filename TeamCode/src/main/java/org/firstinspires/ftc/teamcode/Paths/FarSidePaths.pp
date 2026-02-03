@@ -10,11 +10,11 @@
     {
       "name": "Path 1",
       "endPoint": {
-        "x": 58.00947867298578,
-        "y": 19.1090047393365,
+        "x": 56.985781990521325,
+        "y": 14.672985781990521,
         "heading": "linear",
         "startDeg": 90,
-        "endDeg": 110
+        "endDeg": 100
       },
       "controlPoints": [],
       "color": "#BA6AD6",
@@ -25,42 +25,31 @@
       "waitAfterName": ""
     },
     {
-      "name": "Path 3",
+      "name": "Path 2",
       "endPoint": {
         "x": 9.895734597156398,
-        "y": 8.018957345971563,
+        "y": 9.55450236966825,
         "heading": "linear",
         "reverse": false,
-        "startDeg": 110,
+        "startDeg": 100,
         "endDeg": 180
       },
-      "controlPoints": [],
+      "controlPoints": [
+        {
+          "x": 31.44075829383886,
+          "y": 19.635071090047397
+        }
+      ],
       "color": "#B5D86D",
       "id": "line-9muzbiulwf7",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
+      "waitAfterName": "",
+      "locked": false
     },
     {
-      "name": "Path 4",
-      "endPoint": {
-        "x": 9.554502369668247,
-        "y": 8.018957345971563,
-        "heading": "constant",
-        "reverse": false,
-        "degrees": 180
-      },
-      "controlPoints": [],
-      "color": "#A79DAD",
-      "id": "line-rhpzmakubb",
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": ""
-    },
-    {
-      "name": "Path 5",
+      "name": "Path 3",
       "endPoint": {
         "x": 56.31625525033132,
         "y": 16.294243166146323,
@@ -75,10 +64,11 @@
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
+      "waitAfterName": "",
+      "locked": false
     },
     {
-      "name": "Path 6",
+      "name": "Path 4",
       "endPoint": {
         "x": 35.16499091996279,
         "y": 11.717234353545647,
@@ -93,11 +83,12 @@
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
+      "waitAfterName": "",
+      "locked": true
     },
     {
       "id": "mkg4qc7u-j6pcd2",
-      "name": "Path 7",
+      "name": "Path 5",
       "endPoint": {
         "x": 17.445497630331754,
         "y": 34.445497630331765,
@@ -120,7 +111,8 @@
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
+      "waitAfterName": "",
+      "locked": true
     },
     {
       "id": "line-15mdwew1i79j",
@@ -134,18 +126,18 @@
       },
       "controlPoints": [],
       "color": "#A68688",
-      "locked": false,
+      "locked": true,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
-      "name": ""
+      "name": "Path 6"
     },
     {
       "id": "mkgbrg0t-gakz1j",
-      "name": "Path 9",
+      "name": "Path 7",
       "endPoint": {
-        "x": 18.63210346813128,
+        "x": 15.219781193249762,
         "y": 59.64680869911856,
         "heading": "linear",
         "reverse": false,
@@ -154,15 +146,16 @@
       },
       "controlPoints": [
         {
-          "x": 64.7520706914116,
-          "y": 60.32577401780571
+          "x": 65.77576737387606,
+          "y": 63.22624795145501
         }
       ],
       "color": "#96A689",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
+      "waitAfterName": "",
+      "locked": false
     },
     {
       "id": "line-ng181y8z0qh",
@@ -176,11 +169,12 @@
       },
       "controlPoints": [],
       "color": "#5C5766",
-      "locked": false,
+      "locked": true,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
+      "waitAfterName": "",
+      "name": "Path8"
     },
     {
       "id": "line-vt4kvptksp",
@@ -193,11 +187,12 @@
       },
       "controlPoints": [],
       "color": "#67D6D8",
-      "locked": false,
+      "locked": true,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
-      "waitAfterName": ""
+      "waitAfterName": "",
+      "name": "Path9"
     }
   ],
   "shapes": [],
@@ -209,10 +204,6 @@
     {
       "kind": "path",
       "lineId": "line-9muzbiulwf7"
-    },
-    {
-      "kind": "path",
-      "lineId": "line-rhpzmakubb"
     },
     {
       "kind": "path",
@@ -264,5 +255,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-02-02T07:13:59.103Z"
+  "timestamp": "2026-02-03T04:43:20.983Z"
 }
