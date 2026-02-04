@@ -10,8 +10,8 @@
     {
       "name": "Path 1",
       "endPoint": {
-        "x": 56.81516587677724,
-        "y": 16.890995260663516,
+        "x": 49.64928909952605,
+        "y": 14.8436018957346,
         "heading": "linear",
         "startDeg": 90,
         "endDeg": 115
@@ -28,23 +28,14 @@
       "id": "mkg4qc7u-j6pcd2",
       "name": "Path 2",
       "endPoint": {
-        "x": 17.445497630331754,
-        "y": 34.445497630331765,
+        "x": 23.928909952606638,
+        "y": 35.63981042654028,
         "heading": "linear",
         "reverse": false,
         "startDeg": 115,
-        "endDeg": 180
+        "endDeg": 150
       },
-      "controlPoints": [
-        {
-          "x": 54.99244806661645,
-          "y": 29.24724276918991
-        },
-        {
-          "x": 62.964012047659125,
-          "y": 36.6595650440714
-        }
-      ],
+      "controlPoints": [],
       "color": "#759D68",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
@@ -54,12 +45,12 @@
     {
       "name": "Path 3",
       "endPoint": {
-        "x": 52.037914691943136,
-        "y": 14.331753554502374,
+        "x": 49.30805687203793,
+        "y": 14.843601895734603,
         "heading": "linear",
         "reverse": false,
-        "startDeg": 180,
-        "endDeg": 115
+        "startDeg": 150,
+        "endDeg": 110
       },
       "controlPoints": [],
       "color": "#B5D86D",
@@ -72,21 +63,16 @@
     {
       "name": "Path 4",
       "endPoint": {
-        "x": 12.284360189573455,
-        "y": 10.748815165876788,
+        "x": 10.236966824644544,
+        "y": 7.677725118483432,
         "heading": "linear",
         "reverse": false,
         "degrees": 110,
-        "startDeg": 115,
-        "endDeg": 190
+        "startDeg": 110,
+        "endDeg": 180
       },
-      "controlPoints": [
-        {
-          "x": 11.042654028436022,
-          "y": 19.01421800947868
-        }
-      ],
-      "color": "#A79DAD",
+      "controlPoints": [],
+      "color": "#9674aa",
       "id": "line-rhpzmakubb",
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
@@ -96,12 +82,12 @@
     {
       "id": "line-15mdwew1i79j",
       "endPoint": {
-        "x": 52.20853080568721,
-        "y": 14.331753554502372,
+        "x": 49.30805687203793,
+        "y": 14.672985781990517,
         "heading": "linear",
         "reverse": false,
-        "startDeg": 190,
-        "endDeg": 115
+        "startDeg": 180,
+        "endDeg": 110
       },
       "controlPoints": [],
       "color": "#A68688",
@@ -115,11 +101,11 @@
     {
       "id": "line-vt4kvptksp",
       "endPoint": {
-        "x": 42.14218009478673,
-        "y": 15.86729857819906,
+        "x": 46.407582938388614,
+        "y": 18.767772511848356,
         "heading": "constant",
         "reverse": false,
-        "degrees": 115
+        "degrees": 110
       },
       "controlPoints": [],
       "color": "#67D6D8",
@@ -179,5 +165,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-02-02T07:43:17.563Z"
+  "timestamp": "2026-02-04T16:31:57.998Z"
 }

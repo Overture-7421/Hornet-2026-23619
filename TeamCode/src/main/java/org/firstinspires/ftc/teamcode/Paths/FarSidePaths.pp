@@ -27,19 +27,14 @@
     {
       "name": "Path 2",
       "endPoint": {
-        "x": 9.895734597156398,
-        "y": 9.55450236966825,
-        "heading": "linear",
+        "x": 9.04265402843602,
+        "y": 8.872037914691955,
+        "heading": "tangential",
         "reverse": false,
         "startDeg": 100,
         "endDeg": 180
       },
-      "controlPoints": [
-        {
-          "x": 31.44075829383886,
-          "y": 19.635071090047397
-        }
-      ],
+      "controlPoints": [],
       "color": "#B5D86D",
       "id": "line-9muzbiulwf7",
       "waitBeforeMs": 0,
@@ -137,8 +132,8 @@
       "id": "mkgbrg0t-gakz1j",
       "name": "Path 7",
       "endPoint": {
-        "x": 15.219781193249762,
-        "y": 59.64680869911856,
+        "x": 17.437790671922745,
+        "y": 57.59941533418964,
         "heading": "linear",
         "reverse": false,
         "startDeg": 110,
@@ -146,8 +141,8 @@
       },
       "controlPoints": [
         {
-          "x": 65.77576737387606,
-          "y": 63.22624795145501
+          "x": 60.99851618904196,
+          "y": 61.69070292775832
         }
       ],
       "color": "#96A689",
@@ -255,5 +250,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-02-03T04:43:20.983Z"
+  "timestamp": "2026-02-04T16:24:45.786Z"
 }

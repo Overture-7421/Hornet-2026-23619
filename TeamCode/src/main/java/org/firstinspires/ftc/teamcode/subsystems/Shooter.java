@@ -30,7 +30,7 @@ public class Shooter implements Subsystem {
     public ControlSystem controlSystem = ControlSystem.builder().velPid(coefficients).basicFF(feedForward).build();
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
     public double manualNear = 1000;
-    public double manualFar = 1200;
+    public double manualFar = 1250;
     public InterpolatableMap shooterVelocities = new InterpolatableMap();
     private long stableSince = 0;
     private static final long STABLE_NS = 120_000_000; // 120ms

@@ -71,11 +71,11 @@ public class FarAuto extends NextFTCOpMode {
                 ),
                 robot.shootAutonomousFar(),
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path2, false, 0.7),
+                        new FollowPath(paths.Path2, false, 0.8),
                         Intake.INSTANCE.intakeAutoOn(),
                         Shooter.INSTANCE.stopShooter()
                 ),
-                new Delay(0.5),
+                new Delay(1),
                 Intake.INSTANCE.intakeAutoOff(),
                 Intake.INSTANCE.stopCommand(),
                 new ParallelDeadlineGroup(

@@ -42,20 +42,19 @@ public class FarSidePaths extends MirrorPaths {
         Path2 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierCurve(
+                        new BezierLine(
                                 mirrorPose(new Pose(56.986, 14.673)),
-                                mirrorPose(new Pose(31.441, 19.635)),
-                                mirrorPose(new Pose(9.896, 8.701))
+                                mirrorPose(new Pose(9.043, 8.872))
                         )
                 )
-                .setLinearHeadingInterpolation((mirrorHeading(100)), (mirrorHeading(180)))
+                .setTangentHeadingInterpolation()
                 .build();
 
         Path3 = follower
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
-                                mirrorPose(new Pose(9.896, 8.701)),
+                                mirrorPose(new Pose(9.043, 8.872)),
                                 mirrorPose(new Pose(56.316, 16.294))
                         )
                 )
@@ -102,8 +101,8 @@ public class FarSidePaths extends MirrorPaths {
                 .addPath(
                         new BezierCurve(
                                 mirrorPose(new Pose(57.839, 17.915)),
-                                mirrorPose(new Pose(65.776, 63.226)),
-                                mirrorPose(new Pose(15.220, 59.647))
+                                mirrorPose(new Pose(60.999, 61.691)),
+                                mirrorPose(new Pose(17.438, 57.599))
                         )
                 )
                 .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(180)))
@@ -113,7 +112,7 @@ public class FarSidePaths extends MirrorPaths {
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
-                                mirrorPose(new Pose(15.220, 59.647)),
+                                mirrorPose(new Pose(17.438, 57.599)),
                                 mirrorPose(new Pose(58.180, 18.938))
                         )
                 )
