@@ -25,7 +25,7 @@ import dev.nextftc.hardware.impl.VoltageCompensatingMotor;
 public class Shooter implements Subsystem {
     public static Shooter INSTANCE = new Shooter();
     private final VoltageCompensatingMotor shooterMotors = new VoltageCompensatingMotor(new MotorGroup(new MotorEx("shooterRight"), new MotorEx("shooterLeft")));
-    public PIDCoefficients coefficients = new PIDCoefficients(0.002, 0.0,0.0);
+    public PIDCoefficients coefficients = new PIDCoefficients(0.003, 0.0,0.0);
     public BasicFeedforwardParameters feedForward = new BasicFeedforwardParameters(0.00049,0.0,0.0);
     public ControlSystem controlSystem = ControlSystem.builder().velPid(coefficients).basicFF(feedForward).build();
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
@@ -35,7 +35,7 @@ public class Shooter implements Subsystem {
     private long stableSince = 0;
     private static final long STABLE_NS = 120_000_000; // 120ms
     private static final double TOL = 30;
-    private final double offset = 15;
+    public double offset = 15;
 
 
     private Shooter(){
