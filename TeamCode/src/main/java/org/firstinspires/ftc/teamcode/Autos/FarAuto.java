@@ -49,6 +49,7 @@ public class FarAuto extends NextFTCOpMode {
     public void onStartButtonPressed() {
 
         autoCommand().schedule();
+        Shooter.INSTANCE.offset = 5;
     }
 
     @Override
@@ -61,6 +62,7 @@ public class FarAuto extends NextFTCOpMode {
         BindingManager.reset();
 
         Chassis.INSTANCE.setLastPose();
+        Shooter.INSTANCE.offset = 15;
     }
 
     public CommandGroup autoCommand(){

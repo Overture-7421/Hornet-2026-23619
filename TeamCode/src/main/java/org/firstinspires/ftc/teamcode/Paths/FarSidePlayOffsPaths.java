@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Paths;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -29,29 +30,30 @@ public class FarSidePlayOffsPaths extends MirrorPaths {
                 .addPath(
                         new BezierLine(
                                 mirrorPose(new Pose(56.000, 8.000)),
-                                mirrorPose(new Pose(49.649, 14.844))
+                                mirrorPose(new Pose(55.280, 12.967))
                         )
                 )
-                .setLinearHeadingInterpolation((mirrorHeading(90)), (mirrorHeading(115)))
+                .setLinearHeadingInterpolation((mirrorHeading(90)), (mirrorHeading(110)))
                 .build();
 
         Path2 = follower
                 .pathBuilder()
                 .addPath(
-                        new BezierLine(
-                                mirrorPose(new Pose(49.649, 14.844)),
-                                mirrorPose(new Pose(23.929, 35.640))
+                        new BezierCurve(
+                                mirrorPose(new Pose(55.280, 12.967)),
+                                mirrorPose(new Pose(43.405, 39.659)),
+                                mirrorPose(new Pose(10.962, 36.664))
                         )
                 )
-                .setLinearHeadingInterpolation((mirrorHeading(115)), (mirrorHeading(150)))
+                .setTangentHeadingInterpolation()
                 .build();
 
         Path3 = follower
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
-                                mirrorPose(new Pose(23.929, 35.640)),
-                                mirrorPose(new Pose(49.308, 14.844))
+                                mirrorPose(new Pose(10.962, 36.664)),
+                                mirrorPose(new Pose(47.261, 12.455))
                         )
                 )
                 .setLinearHeadingInterpolation((mirrorHeading(150)), (mirrorHeading(110)))
@@ -61,30 +63,30 @@ public class FarSidePlayOffsPaths extends MirrorPaths {
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
-                                mirrorPose(new Pose(49.308, 14.844)),
-                                mirrorPose(new Pose(10.237, 7.678))
+                                mirrorPose(new Pose(47.261, 12.455)),
+                                mirrorPose(new Pose(9.896, 8.701))
                         )
                 )
-                .setLinearHeadingInterpolation((mirrorHeading(110)), (mirrorHeading(180)))
+                .setTangentHeadingInterpolation()
                 .build();
 
         Path5 = follower
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
-                                mirrorPose(new Pose(10.237, 7.678)),
-                                mirrorPose(new Pose(49.308, 14.673))
+                                mirrorPose(new Pose(9.896, 8.701)),
+                                mirrorPose(new Pose(47.431, 12.455))
                         )
                 )
-                .setLinearHeadingInterpolation((mirrorHeading(180)), (mirrorHeading(110)))
+                .setLinearHeadingInterpolation((mirrorHeading(185)), (mirrorHeading(110)))
                 .build();
 
         Path6 = follower
                 .pathBuilder()
                 .addPath(
                         new BezierLine(
-                                mirrorPose(new Pose(49.308, 14.673)),
-                                mirrorPose(new Pose(46.408, 18.768))
+                                mirrorPose(new Pose(47.431, 12.455)),
+                                mirrorPose(new Pose(42.483, 12.455))
                         )
                 )
                 .setConstantHeadingInterpolation((mirrorHeading(110)))
