@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Autos.ClosePlayOffs;
-import org.firstinspires.ftc.teamcode.utils.Robot;
+import org.firstinspires.ftc.teamcode.utils.MyRobot;
 
 @Autonomous(name = "Close PlayOffs - Blue", group = "ClosePlayOffs")
 public class ClosePlayOffsBlue extends ClosePlayOffs {
     public ClosePlayOffsBlue() {
-        super(Robot.Alliance.Blue);
+        super(MyRobot.Alliance.Blue);
     }
 }

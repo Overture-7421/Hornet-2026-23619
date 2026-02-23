@@ -7,8 +7,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Chassis;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
-import org.firstinspires.ftc.teamcode.utils.Robot;
-import org.firstinspires.ftc.teamcode.utils.SubsystemComponent;
+import org.firstinspires.ftc.teamcode.utils.MyRobot;
 
 import dev.nextftc.bindings.BindingManager;
 import dev.nextftc.core.commands.delays.Delay;
@@ -22,12 +21,12 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 public class ClosePlayOffs extends NextFTCOpMode {
-    private final Robot robot;
+    private final MyRobot robot;
 
     private CloseSidePaths paths;
 
-    public ClosePlayOffs(Robot.Alliance allianceColor){
-        robot = new Robot(allianceColor);
+    public ClosePlayOffs(MyRobot.Alliance allianceColor){
+        robot = new MyRobot(allianceColor);
 
         addComponents(
                 new SubsystemComponent(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE),

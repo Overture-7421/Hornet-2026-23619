@@ -7,7 +7,7 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 
 import org.firstinspires.ftc.teamcode.utils.MirrorPaths;
-import org.firstinspires.ftc.teamcode.utils.Robot.Alliance;
+import org.firstinspires.ftc.teamcode.utils.MyRobot.Alliance;
 
 public class FarSidePaths extends MirrorPaths {
 

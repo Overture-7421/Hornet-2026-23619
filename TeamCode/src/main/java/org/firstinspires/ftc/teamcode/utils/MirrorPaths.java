@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.utils;
 
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.math.MathFunctions;
-import org.firstinspires.ftc.teamcode.utils.Robot.Alliance;
+import org.firstinspires.ftc.teamcode.utils.MyRobot.Alliance;
 
 public abstract class MirrorPaths {
 

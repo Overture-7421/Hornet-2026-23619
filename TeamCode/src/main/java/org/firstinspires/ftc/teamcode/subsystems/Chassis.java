@@ -8,7 +8,7 @@ import com.pedropathing.geometry.Pose;
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 import org.firstinspires.ftc.teamcode.utils.PoseStorage;
-import org.firstinspires.ftc.teamcode.utils.Robot.Alliance;
+import org.firstinspires.ftc.teamcode.utils.MyRobot.Alliance;
 
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.utility.LambdaCommand;
