@@ -23,7 +23,10 @@ public class Chassis implements Subsystem {
     public double turnMultiplier = -0.7;
     private double allianceMultiplier = -1;
     public Pose target = new Pose(8,136);
-    public Pose pastTarget = new Pose(8,136);
+    public Pose blueTarget = new Pose(8,136);
+
+    public Pose redTarget = blueTarget.mirror();
+
     private int stableFrames = 0;
     public double alignMinSpeed = 0.1;
     public double alignMaxSpeed = 1.0;
@@ -49,11 +52,10 @@ public class Chassis implements Subsystem {
     public void setAllianceColor(Alliance allianceColor, boolean isAuto) {
         if (allianceColor == Alliance.Blue) {
             allianceMultiplier = -1;
-            target = pastTarget;
+            target = blueTarget;
         } else {
             allianceMultiplier = 1;
-            pastTarget = target;
-            target = target.mirror();
+            target = redTarget;
         }
     }
 

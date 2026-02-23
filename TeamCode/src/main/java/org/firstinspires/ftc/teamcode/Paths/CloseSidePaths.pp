@@ -9,8 +9,8 @@
   "lines": [
     {
       "endPoint": {
-        "x": 47.77251184834124,
-        "y": 105.27014218009482,
+        "x": 46.06635071090047,
+        "y": 112.09478672985786,
         "heading": "linear",
         "startDeg": 144,
         "endDeg": 132,
@@ -27,10 +27,10 @@
       "locked": true
     },
     {
-      "name": "Path 2",
+      "id": "line-9df6wn9ey0t",
       "endPoint": {
-        "x": 22.227802610004275,
-        "y": 81.8589429707329,
+        "x": 11.772511848341226,
+        "y": 57.497630331753555,
         "heading": "linear",
         "reverse": false,
         "startDeg": 132,
@@ -38,147 +38,203 @@
       },
       "controlPoints": [
         {
-          "x": 57.6067923002628,
-          "y": 77.82046674602998
+          "x": 53.08530805687204,
+          "y": 59.55924170616115
+        },
+        {
+          "x": 63.881516587677716,
+          "y": 56.60663507109008
         }
       ],
-      "color": "#6DA6C6",
-      "id": "line-7gxlf2ell68",
+      "color": "#798C58",
+      "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
-      "locked": true
+      "name": "Path2 - 1"
     },
     {
-      "name": "Path 3",
+      "id": "line-oiq27c5mbpm",
       "endPoint": {
-        "x": 21.683012018933805,
-        "y": 73.93038718905926,
+        "x": 57.838862559241704,
+        "y": 89.23222748815166,
         "heading": "linear",
         "reverse": false,
         "startDeg": 180,
-        "endDeg": 90,
-        "degrees": 180
+        "endDeg": 136
       },
-      "controlPoints": [],
-      "color": "#B6C6CB",
-      "id": "line-6moipmoxf6l",
+      "controlPoints": [
+        {
+          "x": 43.85781990521327,
+          "y": 65.0521327014218
+        }
+      ],
+      "color": "#5BD776",
+      "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
-      "locked": true
+      "name": "Path2 - 2"
     },
     {
-      "name": "Path 4",
+      "id": "line-axwud97wtuq",
       "endPoint": {
-        "x": 55.74820871049617,
-        "y": 84.36885963927135,
+        "x": 23.545023696682463,
+        "y": 66.02843601895735,
         "heading": "linear",
         "reverse": false,
-        "startDeg": 90,
-        "endDeg": 132
-      },
-      "controlPoints": [],
-      "color": "#59A557",
-      "id": "line-s85ahtzsdhe",
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": "",
-      "locked": true
-    },
-    {
-      "name": "Path 5",
-      "endPoint": {
-        "x": 18.413602569573907,
-        "y": 57.85746052424695,
-        "heading": "linear",
-        "reverse": false,
-        "startDeg": 132,
+        "startDeg": 136,
         "endDeg": 180
       },
       "controlPoints": [
         {
-          "x": 67.79645560521999,
-          "y": 50.844006199321676
+          "x": 45.04265402843601,
+          "y": 62.56872037914691
         }
       ],
-      "color": "#8A656A",
-      "id": "line-pwt76w11jcs",
+      "color": "#966685",
+      "locked": true,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
-      "locked": true
+      "name": "Path 3"
     },
     {
-      "name": "Path 6",
+      "id": "line-unijnl699hb",
       "endPoint": {
-        "x": 52.4927562273983,
-        "y": 82.66269850183059,
+        "x": 14.672985781990523,
+        "y": 57.32701421800947,
         "heading": "linear",
         "reverse": false,
         "startDeg": 180,
-        "endDeg": 132
+        "endDeg": 136
       },
       "controlPoints": [
         {
-          "x": 38.15934053592687,
-          "y": 52.61552975000561
+          "x": 20.909952606635073,
+          "y": 57.36492890995259
         }
       ],
-      "color": "#79A8B8",
-      "id": "line-k8q3eak9668",
+      "color": "#A86A9C",
+      "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
-      "locked": true
+      "name": "Path 4"
     },
     {
-      "name": "Path 7",
+      "id": "line-5zydcsw1ekf",
       "endPoint": {
-        "x": 17.765390738720715,
-        "y": 35.308867656522445,
+        "x": 57.66824644549763,
+        "y": 88.89099526066352,
         "heading": "linear",
         "reverse": false,
-        "startDeg": 132,
+        "startDeg": 136,
+        "endDeg": 136
+      },
+      "controlPoints": [
+        {
+          "x": 46.59241706161138,
+          "y": 61.18957345971563
+        }
+      ],
+      "color": "#6A85CB",
+      "locked": true,
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": "",
+      "name": "Path 5"
+    },
+    {
+      "id": "line-g8g3aztolj",
+      "endPoint": {
+        "x": 23.033175355450233,
+        "y": 84.11374407582942,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 136,
         "endDeg": 180
       },
       "controlPoints": [
         {
-          "x": 69.95105800407501,
-          "y": 29.61792497822717
+          "x": 46.649289099526065,
+          "y": 80.61611374407585
         }
       ],
-      "color": "#5A9CDA",
-      "id": "line-gadfrsdz73v",
+      "color": "#7BD557",
+      "locked": true,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
-      "locked": true
+      "name": "Path 6 - 1"
     },
     {
-      "name": "Path 8",
+      "id": "line-ebllnrkopg",
       "endPoint": {
-        "x": 51.98090788616608,
-        "y": 111.31933244985512,
+        "x": 60.739336492891,
+        "y": 84.11374407582939,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 180,
+        "endDeg": 136
+      },
+      "controlPoints": [],
+      "color": "#C5B897",
+      "locked": true,
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": "",
+      "name": "Path 6 - 2"
+    },
+    {
+      "id": "line-6xxugl0it7l",
+      "endPoint": {
+        "x": 12.966824644549762,
+        "y": 34.12322274881517,
+        "heading": "linear",
+        "reverse": false,
+        "startDeg": 136,
+        "endDeg": 180
+      },
+      "controlPoints": [
+        {
+          "x": 65.19905213270141,
+          "y": 29.3222748815166
+        }
+      ],
+      "color": "#DBDDDC",
+      "locked": false,
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": "",
+      "name": "Path 7 - 1"
+    },
+    {
+      "id": "line-4wevfndg2px",
+      "endPoint": {
+        "x": 59.715639810426545,
+        "y": 102.36966824644551,
         "heading": "linear",
         "reverse": false,
         "startDeg": 180,
         "endDeg": 142
       },
       "controlPoints": [],
-      "color": "#CC9758",
-      "id": "line-y7ewsz6cde",
+      "color": "#86C9C5",
+      "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
-      "locked": true
+      "name": "Path7 - 2"
     }
   ],
   "shapes": [],
@@ -189,31 +245,39 @@
     },
     {
       "kind": "path",
-      "lineId": "line-7gxlf2ell68"
+      "lineId": "line-9df6wn9ey0t"
     },
     {
       "kind": "path",
-      "lineId": "line-6moipmoxf6l"
+      "lineId": "line-oiq27c5mbpm"
     },
     {
       "kind": "path",
-      "lineId": "line-s85ahtzsdhe"
+      "lineId": "line-axwud97wtuq"
     },
     {
       "kind": "path",
-      "lineId": "line-pwt76w11jcs"
+      "lineId": "line-unijnl699hb"
     },
     {
       "kind": "path",
-      "lineId": "line-k8q3eak9668"
+      "lineId": "line-5zydcsw1ekf"
     },
     {
       "kind": "path",
-      "lineId": "line-gadfrsdz73v"
+      "lineId": "line-g8g3aztolj"
     },
     {
       "kind": "path",
-      "lineId": "line-y7ewsz6cde"
+      "lineId": "line-ebllnrkopg"
+    },
+    {
+      "kind": "path",
+      "lineId": "line-6xxugl0it7l"
+    },
+    {
+      "kind": "path",
+      "lineId": "line-4wevfndg2px"
     }
   ],
   "settings": {
@@ -237,5 +301,5 @@
     "onionNextPointOnly": false
   },
   "version": "1.2.1",
-  "timestamp": "2026-02-02T22:20:58.748Z"
+  "timestamp": "2026-02-05T22:52:10.674Z"
 }

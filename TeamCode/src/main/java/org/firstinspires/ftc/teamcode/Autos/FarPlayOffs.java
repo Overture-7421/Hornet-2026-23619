@@ -46,7 +46,7 @@ public class FarPlayOffs extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        Shooter.INSTANCE.offset = 5;
+        Shooter.INSTANCE.offset = 0;
         autoCommand().schedule();
     }
 
@@ -71,60 +71,69 @@ public class FarPlayOffs extends NextFTCOpMode {
                 ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path2, false, 1.0),
+                        new FollowPath(paths.Path2, false, 0.827),
                         Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter()
+                        Shooter.INSTANCE.stopShooter(),
+                        new SequentialGroup(
+                                new Delay(0.5),
+                                Shooter.INSTANCE.setShooter()
+                        )
                 ),
                 Intake.INSTANCE.intakeAutoOff(),
                 Intake.INSTANCE.stopCommand(),
+                robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path3, false, 1.0),
-                        Shooter.INSTANCE.setShooter()
-                ),
-                robot.shootAutonomous(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path4, false, 1.0),
                         Intake.INSTANCE.intakeAutoOn(),
                         Shooter.INSTANCE.stopShooter()
                 ),
-                new Delay(1.5),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path5, false, 1.0),
-                        Shooter.INSTANCE.setShooter()
-                ),
-                robot.shootAutonomous(),
+                new Delay(0.4),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path4, false, 1.0),
+                        new SequentialGroup(
+                                new Delay(0.7),
+                                Shooter.INSTANCE.setShooter()
+                        )
+                ),
+                Intake.INSTANCE.intakeAutoOff(),
+                Intake.INSTANCE.stopCommand(),
+                robot.shootAutonomous(),
+                new Delay(0.4),
+                new ParallelDeadlineGroup(
+                        new FollowPath(paths.Path3, false, 1.0),
                         Intake.INSTANCE.intakeAutoOn(),
                         Shooter.INSTANCE.stopShooter()
                 ),
-                new Delay(1.5),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path5, false, 1.0),
-                        Shooter.INSTANCE.setShooter()
-                ),
-                robot.shootAutonomous(),
+                new Delay(0.2),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path4, false, 1.0),
+                        new SequentialGroup(
+                                new Delay(0.7),
+                                Shooter.INSTANCE.setShooter()
+                        )
+                ),
+                Intake.INSTANCE.intakeAutoOff(),
+                Intake.INSTANCE.stopCommand(),
+                robot.shootAutonomous(),
+                new Delay(0.4),
+                new ParallelDeadlineGroup(
+                        new FollowPath(paths.Path3, false, 1.0),
                         Intake.INSTANCE.intakeAutoOn(),
                         Shooter.INSTANCE.stopShooter()
                 ),
-                new Delay(1.5),
+                new Delay(0.2),
+                new ParallelDeadlineGroup(
+                        new FollowPath(paths.Path4, false, 1.0),
+                        new SequentialGroup(
+                                new Delay(0.7),
+                                Shooter.INSTANCE.setShooter()
+                        )
+                ),
                 Intake.INSTANCE.intakeAutoOff(),
                 Intake.INSTANCE.stopCommand(),
-                new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path5, false, 1.0),
-                        Shooter.INSTANCE.setShooter()
-                ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPath(paths.Path6, false, 1.0),
-                        Intake.INSTANCE.intakeAutoOff(),
-                        Intake.INSTANCE.stopCommand(),
                         Shooter.INSTANCE.stopShooter()
                 )
         );

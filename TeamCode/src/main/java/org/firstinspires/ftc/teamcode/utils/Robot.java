@@ -69,7 +69,7 @@ public class Robot {
                 Chassis.INSTANCE.autoAlign(),
                 Shooter.INSTANCE.setShooter(),
                 Intake.INSTANCE.shootCommand(),
-                new Delay(1.5)
+                new Delay(1.0)
                 ).setRequirements(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE);
     }
     public Command shootAutonomousFar(){
