@@ -44,59 +44,59 @@ public class CloseAuto extends CommandOpMode {
         return new SequentialCommandGroup(
                 new ParallelDeadlineGroup(
                         new FollowPathCommand(robot.follower(), paths.Path1, false, 0.7),
-                        Shooter.setShooter()
+                        shooter.setShooter()
                 ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPathCommand(robot.follower(), paths.Path2,false, 1.0),
-                        Intake.intakeAutoOn(),
-                        Shooter.stopShooter(),
+                        intake.intakeAutoOn(),
+                        shooter.stopShooter(),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
-                                Shooter.setShooter()
+                                shooter.setShooter()
                         )
                 ),
-                Intake.intakeAutoOff(),
-                Intake.stopCommand(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
                 robot.shootAutonomous(),
                 new FollowPathCommand(robot.follower(), paths.Path3,false, 1.0),
                 new ParallelDeadlineGroup(
                         new FollowPathCommand(robot.follower(), paths.Path4,false, 1.0),
-                        Intake.intakeAutoOn(),
-                        Shooter.stopShooter()
+                        intake.intakeAutoOn(),
+                        shooter.stopShooter()
                 ),
                 new WaitCommand(1000),
                 
                 new ParallelDeadlineGroup(
                         new FollowPathCommand(robot.follower(), paths.Path5, false, 1.0),
-                        Shooter.setShooter()
+                        shooter.setShooter()
                 ),
-                Intake.intakeAutoOff(),
-                Intake.stopCommand(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPathCommand(robot.follower(), paths.Path6,false, 1.0),
-                        Intake.intakeAutoOn(),
-                        Shooter.stopShooter(),
+                        intake.intakeAutoOn(),
+                        shooter.stopShooter(),
                         new SequentialCommandGroup(
                                 new WaitCommand(200),
-                                Shooter.setShooter()
+                                shooter.setShooter()
                         )
                 ),
-                Intake.intakeAutoOff(),
-                Intake.stopCommand(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
                         new FollowPathCommand(robot.follower(), paths.Path7,false, 1.0),
-                        Intake.intakeAutoOn(),
-                        Shooter.stopShooter(),
+                        intake.intakeAutoOn(),
+                        shooter.stopShooter(),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
-                                Shooter.setShooter()
+                                shooter.setShooter()
                         )
                 ),
-                Intake.intakeAutoOff(),
-                Intake.stopCommand(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
                 robot.shootAutonomous()
 
 

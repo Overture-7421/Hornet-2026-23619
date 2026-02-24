@@ -56,14 +56,14 @@ public class MyRobot extends Robot {
     }
 
     public void initTeleop(){
-        Chassis.setAllianceColor(this.alliance, false);
-        Chassis.initPedro(false, new Pose(8, 8));
+        chassis.setAllianceColor(this.alliance, false);
+        chassis.initPedro(false, new Pose(8, 8));
         setBindings();
     }
 
     public void initAuto(Pose starting){
-        Chassis.setAllianceColor(this.alliance, true);
-        Chassis.initPedro(true, starting);
+        chassis.setAllianceColor(this.alliance, true);
+        chassis.initPedro(true, starting);
     }
 
     public void setBindings(){
@@ -90,24 +90,24 @@ public class MyRobot extends Robot {
     }
 
     public void onEnd(){
-        Chassis.setLastPose();
+        chassis.setLastPose();
     }
 
 
 
     public SequentialCommandGroup shootAutonomous(){
         return new SequentialCommandGroup(
-                new InstantCommand(()->Chassis.resetFrames()),
-                Chassis.autoAlign(),
-                Shooter.setShooter(),
+                new InstantCommand(()->chassis.resetFrames()),
+                chassis.autoAlign(),
+                shooter.setShooter(),
                 intake.shootCommand(),
                 new WaitCommand(1000)
                 );
     }
     public SequentialCommandGroup shootAutonomousFar(){
         return new SequentialCommandGroup(
-                Chassis.autoAlign(),
-                Shooter.setShooterManualFar(),
+                chassis.autoAlign(),
+                shooter.setShooterManualFar(),
                 new InstantCommand(intake::shootCommand, intake),
                 new WaitCommand(1400)
         );
@@ -115,23 +115,23 @@ public class MyRobot extends Robot {
 
     public ParallelCommandGroup stopShooting(){
         return new ParallelCommandGroup(
-                new InstantCommand(() -> Chassis.isAlignOn = false),
-                Shooter.stopShooter(),
+                new InstantCommand(() -> chassis.isAlignOn = false),
+                shooter.stopShooter(),
                 intake.stopCommand()
         );
     }
 
     public SequentialCommandGroup automaticShoot(){
         return new SequentialCommandGroup(
-                new InstantCommand(() -> Chassis.isAlignOn = true),
-                new InstantCommand(()->Chassis.resetFrames()),
+                new InstantCommand(() -> chassis.isAlignOn = true),
+                new InstantCommand(()->chassis.resetFrames()),
                 new ParallelDeadlineGroup(
-                        new WaitUntilCommand(()->Chassis.isAtTargetHeading()),
-                        Shooter.setShooter()
+                        new WaitUntilCommand(()->chassis.isAtTargetHeading()),
+                        shooter.setShooter()
                 ),
-                Shooter.setShooter(),
+                shooter.setShooter(),
                 intake.shootCommand(),
-            new InstantCommand(() -> Chassis.isAlignOn = false)
+            new InstantCommand(() -> chassis.isAlignOn = false)
         );
     }
 
@@ -143,7 +143,7 @@ public class MyRobot extends Robot {
     }
     public SequentialCommandGroup manualShootFar(){
         return new SequentialCommandGroup(
-                Shooter.setShooterManualFar(),
+                shooter.setShooterManualFar(),
                 intake.shootCommand()
         );
     }
