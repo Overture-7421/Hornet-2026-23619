@@ -46,7 +46,7 @@ public class MyRobot extends Robot {
         chassis = new Chassis(hardwareMap, follower);
         intake = new Intake(hardwareMap);
         shooter = new Shooter(hardwareMap);
-        camera = new Camera(hardwareMap);
+        camera = new Camera(hardwareMap, follower);
 
         setBulkReading(hardwareMap, LynxModule.BulkCachingMode.MANUAL);
     }
@@ -137,7 +137,7 @@ public class MyRobot extends Robot {
 
     public SequentialCommandGroup manualShootNear(){
         return new SequentialCommandGroup(
-                Shooter.setShooterManualNear(),
+                shooter.setShooterManualNear(),
                 intake.shootCommand()
         );
     }
