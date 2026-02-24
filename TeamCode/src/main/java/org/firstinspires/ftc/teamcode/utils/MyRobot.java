@@ -82,7 +82,7 @@ public class MyRobot extends Robot {
                 .whileActiveOnce(Intake.intakeCommand())
                 .whenInactive(Intake.stopCommand());
         driver.getGamepadButton(GamepadKeys.Button.X)
-                .whenHeld(Intake.shootCommand())
+                .whenHeld(new InstantCommand(intake::shootCommand, intake))
                 .whenReleased(Intake.stopCommand());
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenHeld(Intake.reverseIntake())
@@ -108,7 +108,7 @@ public class MyRobot extends Robot {
         return new SequentialCommandGroup(
                 Chassis.autoAlign(),
                 Shooter.setShooterManualFar(),
-                Intake.shootCommand(),
+                new InstantCommand(intake::shootCommand, intake),
                 new WaitCommand(1400)
         );
     }
