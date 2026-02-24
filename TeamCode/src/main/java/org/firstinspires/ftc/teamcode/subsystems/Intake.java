@@ -3,36 +3,30 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.command.InstantCommand;
+import com.seattlesolvers.solverslib.command.RunCommand;
+import com.seattlesolvers.solverslib.command.SubsystemBase;
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.utility.InstantCommand;
-import dev.nextftc.core.commands.utility.LambdaCommand;
-import dev.nextftc.core.subsystems.Subsystem;
-import dev.nextftc.ftc.ActiveOpMode;
-import dev.nextftc.hardware.impl.MotorEx;
-import dev.nextftc.hardware.impl.ServoEx;
-import dev.nextftc.hardware.positionable.SetPosition;
 
-public class Intake implements Subsystem {
 
-    public static Intake INSTANCE = new Intake();
-    private MotorEx intakeMotor;
-    private MotorEx topMotor;
+public class Intake extends SubsystemBase {
+    private final MotorEx intakeMotor;
+    private final MotorEx topMotor;
 
-    private ColorRangeSensor topSensor;
-    private boolean autoIntake = false;
+    private final ColorRangeSensor topSensor;
+    private boolean autoIntake;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
-    private Intake(){}
-
-    @Override
-    public void initialize(){
-        intakeMotor = new MotorEx("intake").brakeMode();
-        topMotor = new MotorEx("upMotor").brakeMode().reversed();
-
-        topSensor = ActiveOpMode.hardwareMap().get(ColorRangeSensor.class, "upSensor");
+    public Intake(HardwareMap hardwareMap){
+        intakeMotor = new MotorEx(hardwareMap, "intake");
+        intakeMotor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
+        topMotor =  new MotorEx(hardwareMap, "upMotor");;
+        topMotor.setInverted(true);
+        topSensor = hardwareMap.get(ColorRangeSensor.class, "upSensor");
 
         autoIntake = false;
     }
@@ -44,11 +38,11 @@ public class Intake implements Subsystem {
 
         if (autoIntake){
             if (checkTopSensor()) {
-                topMotor.setPower(-0.1);
-                intakeMotor.setPower(0.8);
+                topMotor.set(-0.1);
+                intakeMotor.set(0.8);
             } else {
-                topMotor.setPower(0.3);
-                intakeMotor.setPower(0.8);
+                topMotor.set(0.3);
+                intakeMotor.set(0.8);
             }
         }
     }
@@ -57,54 +51,50 @@ public class Intake implements Subsystem {
         return topSensor.getDistance(DistanceUnit.CM) < 5;
     }
 
-    public Command shootCommand(){
+    public InstantCommand shootCommand(){
         return new InstantCommand(() -> {
-                        topMotor.setPower(0.9);
-                        intakeMotor.setPower(1);
-                })
-                .requires(this);
+                        topMotor.set(0.9);
+                        intakeMotor.set(1);
+                });
+
     }
 
-    public Command stopCommand(){
+    public InstantCommand stopCommand(){
         return new InstantCommand(()-> {
-                    topMotor.setPower(0);
-                    intakeMotor.setPower(0);
-                        }
-                ).requires(this);
+                    topMotor.set(0);
+                    intakeMotor.set(0);
+                        });
     }
 
-    public Command reverseIntake(){
+    public InstantCommand reverseIntake(){
         return new InstantCommand(()-> {
-                            topMotor.setPower(-1);
-                            intakeMotor.setPower(-1);
+                            topMotor.set(-1);
+                            intakeMotor.set(-1);
                         }
-                ).requires(this);
+        );
     }
 
     
-    public Command intakeCommand(){
-        return new LambdaCommand()
-                .setUpdate(() -> {
+    public RunCommand intakeCommand(){
+        return new RunCommand(
+                () -> {
                     if (checkTopSensor()) {
-                        topMotor.setPower(-0.2);
-                        intakeMotor.setPower(1);
+                        topMotor.set(-0.2);
+                        intakeMotor.set(1);
                     } else {
-                        topMotor.setPower(0.25);
-                        intakeMotor.setPower(1);
+                        topMotor.set(0.25);
+                        intakeMotor.set(1);
                     }
                 }
-                ).requires(this);
+
+         );
     }
 
-    public Command intakeAutoOn(){
-        return new InstantCommand(()->{
-            autoIntake = true;
-        });
+    public InstantCommand intakeAutoOn(){
+        return new InstantCommand(()-> autoIntake = true);
     }
 
-    public Command intakeAutoOff(){
-        return new InstantCommand(()->{
-            autoIntake = false;
-        });
+    public InstantCommand intakeAutoOff(){
+        return new InstantCommand(()-> autoIntake = false);
     }
 }
