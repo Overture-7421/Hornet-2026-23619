@@ -67,7 +67,7 @@ public class MyRobot extends Robot {
     }
 
     public void setBindings(){
-        Chassis.setDefaultCommand(Chassis.startDriving());
+        chassis.setDefaultCommand(chassis.startDriving());
 
         new Trigger(()->driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.3)
                 .whileActiveOnce(automaticShoot())
@@ -79,14 +79,14 @@ public class MyRobot extends Robot {
                 .whenHeld(manualShootFar())
                 .whenReleased(stopShooting());
         new Trigger(()->driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.3)
-                .whileActiveOnce(Intake.intakeCommand())
-                .whenInactive(Intake.stopCommand());
+                .whileActiveOnce(intake.intakeCommand())
+                .whenInactive(intake.stopCommand());
         driver.getGamepadButton(GamepadKeys.Button.X)
-                .whenHeld(new InstantCommand(intake::shootCommand, intake))
-                .whenReleased(Intake.stopCommand());
+                .whenHeld(intake.shootCommand())
+                .whenReleased(intake.stopCommand());
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenHeld(Intake.reverseIntake())
-                .whenReleased(Intake.stopCommand());
+                .whenHeld(intake.reverseIntake())
+                .whenReleased(intake.stopCommand());
     }
 
     public void onEnd(){
@@ -100,7 +100,7 @@ public class MyRobot extends Robot {
                 new InstantCommand(()->Chassis.resetFrames()),
                 Chassis.autoAlign(),
                 Shooter.setShooter(),
-                Intake.shootCommand(),
+                intake.shootCommand(),
                 new WaitCommand(1000)
                 );
     }
@@ -117,7 +117,7 @@ public class MyRobot extends Robot {
         return new ParallelCommandGroup(
                 new InstantCommand(() -> Chassis.isAlignOn = false),
                 Shooter.stopShooter(),
-                Intake.stopCommand()
+                intake.stopCommand()
         );
     }
 
@@ -130,7 +130,7 @@ public class MyRobot extends Robot {
                         Shooter.setShooter()
                 ),
                 Shooter.setShooter(),
-                Intake.shootCommand(),
+                intake.shootCommand(),
             new InstantCommand(() -> Chassis.isAlignOn = false)
         );
     }
@@ -138,13 +138,13 @@ public class MyRobot extends Robot {
     public SequentialCommandGroup manualShootNear(){
         return new SequentialCommandGroup(
                 Shooter.setShooterManualNear(),
-                Intake.shootCommand()
+                intake.shootCommand()
         );
     }
     public SequentialCommandGroup manualShootFar(){
         return new SequentialCommandGroup(
                 Shooter.setShooterManualFar(),
-                Intake.shootCommand()
+                intake.shootCommand()
         );
     }
 }

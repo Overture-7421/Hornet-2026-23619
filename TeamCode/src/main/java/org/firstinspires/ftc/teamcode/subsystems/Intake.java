@@ -51,9 +51,11 @@ public class Intake extends SubsystemBase {
         return topSensor.getDistance(DistanceUnit.CM) < 5;
     }
 
-    public void shootCommand(){
-        topMotor.set(0.9);
-        intakeMotor.set(1);
+    public InstantCommand shootCommand(){
+        return new InstantCommand(() -> {
+                        topMotor.set(0.9);
+                        intakeMotor.set(1);
+                });
     }
 
     public InstantCommand stopCommand(){
