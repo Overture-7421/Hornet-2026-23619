@@ -5,20 +5,20 @@ import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
+import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.FunctionalCommand;
+import com.seattlesolvers.solverslib.command.InstantCommand;
+import com.seattlesolvers.solverslib.command.RunCommand;
+import com.seattlesolvers.solverslib.command.SubsystemBase;
+import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 
 import org.firstinspires.ftc.teamcode.utils.PoseStorage;
 import org.firstinspires.ftc.teamcode.utils.MyRobot.Alliance;
 
-import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.utility.LambdaCommand;
-import dev.nextftc.core.subsystems.Subsystem;
-import dev.nextftc.ftc.ActiveOpMode;
-
 @Configurable
-public class Chassis implements Subsystem {
-    public static Chassis INSTANCE = new Chassis();
-    private Follower follower;
+public class Chassis extends SubsystemBase {
+    private final Follower follower;
+    private final GamepadEx driver;
     public double speedMultiplier;
     public double turnMultiplier = -0.7;
     private double allianceMultiplier = -1;
@@ -35,7 +35,9 @@ public class Chassis implements Subsystem {
     public boolean isAlignOn = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
-    private Chassis() {
+    public Chassis(Follower follower, GamepadEx driver) {
+        this.follower = follower;
+        this.driver = driver;
     }
 
     @Override
@@ -70,60 +72,59 @@ public class Chassis implements Subsystem {
         return speed * Math.signum(errorRad);
     }
 
+    public InstantCommand slowMode(){
+        return new InstantCommand(()->{
+            turnMultiplier = -0.35;
+            speedMultiplier = 0.25;
+        });
+    }
+
+    public InstantCommand normalMode(){
+        return new InstantCommand(()->{
+            turnMultiplier = -0.7;
+            speedMultiplier = 1;
+        });
+    }
+
     public Command drive() {
-        return new LambdaCommand()
-                .setStart(() -> follower.startTeleopDrive(true))
-                .setUpdate(() -> {
-                    double turn;
+        return new RunCommand(()->{
+            double turn;
 
-                    if(ActiveOpMode.gamepad1().left_bumper){
-                        turnMultiplier = -0.35;
-                        speedMultiplier = 0.25;
-                    } else {
-                        turnMultiplier = -0.7;
-                        speedMultiplier = 1;
-                    }
+            if (isAlignOn) {
+                turn = calculateAlignmentTurn();
+            } else {
+                stableFrames = 0;
+                turn = driver.getRightX() * turnMultiplier;
 
-                    if (isAlignOn) {
-                        turn = calculateAlignmentTurn();
-                    } else {
-                        stableFrames = 0;
-                        turn = ActiveOpMode.gamepad1().right_stick_x * turnMultiplier;
-                    }
+            }
 
-                    follower.setTeleOpDrive(
-                            -ActiveOpMode.gamepad1().left_stick_y * allianceMultiplier * speedMultiplier,
-                            -ActiveOpMode.gamepad1().left_stick_x * allianceMultiplier * speedMultiplier,
-                            turn,
-                            false);
-
-                })
-                .setStop((Boolean interrupted) -> {
-                    if (interrupted) follower.breakFollowing();
-                })
-                .setIsDone(() -> false)
-                .requires(this);
+            follower.setTeleOpDrive(
+                    driver.getLeftY() * allianceMultiplier * speedMultiplier,
+                    driver.getLeftX() * allianceMultiplier * speedMultiplier,
+                    turn,
+                    false);
+        })
+                .beforeStarting(() -> follower.startTeleopDrive(true))
+                .whenFinished(follower::breakFollowing);
     }
 
     public Command autoAlign() {
-        return new LambdaCommand()
-                .setStart(() -> {
+        return new RunCommand(() -> {
+            double turn = calculateAlignmentTurn();
+
+            follower.setTeleOpDrive(
+                    0,
+                    0,
+                    turn,
+                    false);
+
+        })
+                .beforeStarting(() -> {
                     follower.startTeleopDrive(true);
                     resetFrames();
                 })
-                .setUpdate(() -> {
-                    double turn = calculateAlignmentTurn();
-
-                    follower.setTeleOpDrive(
-                            0,
-                            0,
-                            turn,
-                            false);
-
-                })
-                .setStop((Boolean interrupted) -> follower.breakFollowing())
-                .setIsDone(this::isAtTargetHeading)
-                .requires(this);
+                .whenFinished(follower::breakFollowing)
+                .interruptOn(this::isAtTargetHeading);
     }
 
     public void resetFrames(){
@@ -131,8 +132,6 @@ public class Chassis implements Subsystem {
     }
 
     public void initPedro(boolean isAuto, Pose starting) {
-        follower = follower();
-
         if (PoseStorage.currentPose != null && !isAuto) {
             follower.setPose(PoseStorage.currentPose);
         } else if (!isAuto) {
@@ -140,10 +139,6 @@ public class Chassis implements Subsystem {
         } else {
             follower.setPose(starting);
         }
-    }
-
-    public void startDriving() {
-        drive().schedule();
     }
 
     public double calculateHeading(Pose tempTarget) {

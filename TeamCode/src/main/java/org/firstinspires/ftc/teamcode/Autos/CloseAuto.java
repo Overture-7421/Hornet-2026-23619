@@ -1,23 +1,28 @@
 package org.firstinspires.ftc.teamcode.Autos;
 
 import org.firstinspires.ftc.teamcode.Paths.CloseSidePaths;
+import org.firstinspires.ftc.teamcode.subsystems.Chassis;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.utils.MyRobot;
-
 
 import com.seattlesolvers.solverslib.command.CommandOpMode;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.ParallelDeadlineGroup;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
+import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 
 
 public class CloseAuto extends CommandOpMode {
     private MyRobot robot;
-    public MyRobot.Alliance alliance;
+    private final MyRobot.Alliance alliance;
+    private Intake intake;
+    private Shooter shooter;
+    private Chassis chassis;
+    private final GamepadEx driver = new GamepadEx(gamepad1);
 
     private CloseSidePaths paths;
 
@@ -27,17 +32,24 @@ public class CloseAuto extends CommandOpMode {
 
     @Override
     public void initialize() {
-        robot = new MyRobot(alliance, hardwareMap);
+        robot = new MyRobot(alliance, hardwareMap, driver);
+        intake = robot.getIntake();
+        shooter = robot.getShooter();
+        chassis = robot.getChassis();
         paths = new CloseSidePaths(robot.follower(), alliance);
         robot.initAuto(paths.startPose);
         super.reset();
-
     }
 
 
     @Override
     public void run() {
         CommandScheduler.getInstance().schedule(autoCommand());
+    }
+
+    @Override
+    public void end(){
+        chassis.setLastPose();
     }
 
     public SequentialCommandGroup autoCommand(){
@@ -66,7 +78,6 @@ public class CloseAuto extends CommandOpMode {
                         shooter.stopShooter()
                 ),
                 new WaitCommand(1000),
-                
                 new ParallelDeadlineGroup(
                         new FollowPathCommand(robot.follower(), paths.Path5, false, 1.0),
                         shooter.setShooter()
@@ -98,9 +109,6 @@ public class CloseAuto extends CommandOpMode {
                 intake.intakeAutoOff(),
                 intake.stopCommand(),
                 robot.shootAutonomous()
-
-
-
         );
     }
 }

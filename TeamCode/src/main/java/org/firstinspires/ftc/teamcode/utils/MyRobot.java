@@ -29,26 +29,38 @@ public class MyRobot extends Robot {
         Blue
     }
 
-    private Chassis chassis;
-    private Intake intake;
-    private Shooter shooter;
-    private Camera camera;
-
+    private final Chassis chassis;
+    private final Intake intake;
+    private final Shooter shooter;
+    private final Camera camera;
     private final Alliance alliance;
-    private GamepadEx driver;
+    private final GamepadEx driver;
 
     private final Follower follower;
 
-    public MyRobot(Alliance alliance, HardwareMap hardwareMap){
+    public MyRobot(Alliance alliance, HardwareMap hardwareMap, GamepadEx driver){
+        this.driver = driver;
         this.alliance = alliance;
         follower = Constants.createFollower(hardwareMap);
 
-        chassis = new Chassis(hardwareMap, follower);
+        chassis = new Chassis(follower, driver);
         intake = new Intake(hardwareMap);
-        shooter = new Shooter(hardwareMap);
-        camera = new Camera(hardwareMap, follower);
+        shooter = new Shooter(hardwareMap, chassis);
+        camera = new Camera(hardwareMap, follower, chassis);
 
         setBulkReading(hardwareMap, LynxModule.BulkCachingMode.MANUAL);
+    }
+
+    public Chassis getChassis(){
+        return this.chassis;
+    }
+
+    public Intake getIntake(){
+        return this.intake;
+    }
+
+    public Shooter getShooter(){
+        return this.shooter;
     }
 
     public Follower follower(){
@@ -67,7 +79,7 @@ public class MyRobot extends Robot {
     }
 
     public void setBindings(){
-        chassis.setDefaultCommand(chassis.startDriving());
+        chassis.setDefaultCommand(chassis.drive());
 
         new Trigger(()->driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.3)
                 .whileActiveOnce(automaticShoot())
@@ -76,7 +88,7 @@ public class MyRobot extends Robot {
                 .whenHeld(manualShootFar())
                 .whenReleased(stopShooting());
         driver.getGamepadButton(GamepadKeys.Button.B)
-                .whenHeld(manualShootFar())
+                .whenHeld(manualShootNear())
                 .whenReleased(stopShooting());
         new Trigger(()->driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.3)
                 .whileActiveOnce(intake.intakeCommand())
@@ -87,6 +99,9 @@ public class MyRobot extends Robot {
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
                 .whenHeld(intake.reverseIntake())
                 .whenReleased(intake.stopCommand());
+        driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenActive(chassis.slowMode())
+                .whenInactive(chassis.normalMode());
     }
 
     public void onEnd(){
@@ -97,7 +112,7 @@ public class MyRobot extends Robot {
 
     public SequentialCommandGroup shootAutonomous(){
         return new SequentialCommandGroup(
-                new InstantCommand(()->chassis.resetFrames()),
+                new InstantCommand(chassis::resetFrames),
                 chassis.autoAlign(),
                 shooter.setShooter(),
                 intake.shootCommand(),
@@ -124,9 +139,9 @@ public class MyRobot extends Robot {
     public SequentialCommandGroup automaticShoot(){
         return new SequentialCommandGroup(
                 new InstantCommand(() -> chassis.isAlignOn = true),
-                new InstantCommand(()->chassis.resetFrames()),
+                new InstantCommand(chassis::resetFrames),
                 new ParallelDeadlineGroup(
-                        new WaitUntilCommand(()->chassis.isAtTargetHeading()),
+                        new WaitUntilCommand(chassis::isAtTargetHeading),
                         shooter.setShooter()
                 ),
                 shooter.setShooter(),

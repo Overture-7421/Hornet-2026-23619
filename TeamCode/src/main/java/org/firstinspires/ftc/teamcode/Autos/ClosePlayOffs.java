@@ -1,128 +1,119 @@
 package org.firstinspires.ftc.teamcode.Autos;
 
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
+import com.seattlesolvers.solverslib.command.CommandOpMode;
+import com.seattlesolvers.solverslib.command.CommandScheduler;
+import com.seattlesolvers.solverslib.command.ParallelDeadlineGroup;
+import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
+import com.seattlesolvers.solverslib.command.WaitCommand;
+import com.seattlesolvers.solverslib.gamepad.GamepadEx;
+import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 import org.firstinspires.ftc.teamcode.Paths.CloseSidePaths;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Chassis;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.utils.MyRobot;
 
-import dev.nextftc.bindings.BindingManager;
-import dev.nextftc.core.commands.delays.Delay;
-import dev.nextftc.core.commands.groups.CommandGroup;
-import dev.nextftc.core.commands.groups.ParallelDeadlineGroup;
-import dev.nextftc.core.commands.groups.SequentialGroup;
-import dev.nextftc.core.components.BindingsComponent;
-import dev.nextftc.extensions.pedro.FollowPath;
-import dev.nextftc.extensions.pedro.PedroComponent;
-import dev.nextftc.ftc.NextFTCOpMode;
-import dev.nextftc.ftc.components.BulkReadComponent;
-
-public class ClosePlayOffs extends NextFTCOpMode {
-    private final MyRobot robot;
+public class ClosePlayOffs extends CommandOpMode {
+    private MyRobot robot;
+    private final MyRobot.Alliance alliance;
+    private Intake intake;
+    private Shooter shooter;
+    private Chassis chassis;
+    
+    private final GamepadEx driver = new GamepadEx(gamepad1);
 
     private CloseSidePaths paths;
 
     public ClosePlayOffs(MyRobot.Alliance allianceColor){
-        robot = new MyRobot(allianceColor);
-
-        addComponents(
-                new SubsystemComponent(Intake.INSTANCE, Shooter.INSTANCE, Chassis.INSTANCE),
-                new PedroComponent(Constants::createFollower),
-                BindingsComponent.INSTANCE,
-                BulkReadComponent.INSTANCE
-        );
+        alliance = allianceColor;
     }
 
-    public void onInit() {
-        paths = new CloseSidePaths(follower(), robot.alliance);
-
-        robot.initRobotAuto(paths.startPose);
+    @Override
+    public void initialize() {
+        robot = new MyRobot(alliance, hardwareMap, driver);
+        intake = robot.getIntake();
+        shooter = robot.getShooter();
+        chassis = robot.getChassis();
+        paths = new CloseSidePaths(robot.follower(), alliance);
+        robot.initAuto(paths.startPose);
+        super.reset();
 
     }
 
     @Override
-    public void onStartButtonPressed() {
-        autoCommand().schedule();
+    public void run() {
+        CommandScheduler.getInstance().schedule(autoCommand());
     }
 
     @Override
-    public void onUpdate() {
-        BindingManager.update();
+    public void end(){
+        chassis.setLastPose();
     }
 
-    @Override
-    public void onStop() {
-        BindingManager.reset();
-
-        Chassis.INSTANCE.setLastPose();
-    }
-
-    public CommandGroup autoCommand(){
-        return new SequentialGroup(
+    public SequentialCommandGroup autoCommand(){
+        return new SequentialCommandGroup(
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path1, false, 0.7),
-                        Shooter.INSTANCE.setShooter()
+                        new FollowPathCommand(robot.follower(),paths.Path1, false, 0.7),
+                        shooter.setShooter()
                 ),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path2,false, 1.0),
-                        Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter(),
-                        new SequentialGroup(
-                                new Delay(0.5),
-                                Shooter.INSTANCE.setShooter()
+                        new FollowPathCommand(robot.follower(),paths.Path2,false, 1.0),
+                        intake.intakeAutoOn(),
+                        shooter.stopShooter(),
+                        new SequentialCommandGroup(
+                                new WaitCommand(500),
+                                shooter.setShooter()
                         )
                 ),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
                 robot.shootAutonomous(),
-                new FollowPath(paths.Path3,false, 1.0),
+                new FollowPathCommand(robot.follower(),paths.Path3,false, 1.0),
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path4,false, 1.0),
-                        Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter()
+                        new FollowPathCommand(robot.follower(),paths.Path4,false, 1.0),
+                        intake.intakeAutoOn(),
+                        shooter.stopShooter()
                 ),
-                new Delay(1.0),
+                new WaitCommand(1000),
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path5, false, 1.0),
-                        Shooter.INSTANCE.setShooter()
+                        new FollowPathCommand(robot.follower(),paths.Path5, false, 1.0),
+                        shooter.setShooter()
                 ),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
                 robot.shootAutonomous(),
-                new FollowPath(paths.Path3,false, 1.0),
+                new FollowPathCommand(robot.follower(),paths.Path3,false, 1.0),
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path4,false, 1.0),
-                        Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter()
+                        new FollowPathCommand(robot.follower(),paths.Path4,false, 1.0),
+                        intake.intakeAutoOn(),
+                        shooter.stopShooter()
                 ),
-                new Delay(1.0),
+                new WaitCommand(1000),
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path5, false, 1.0),
-                        Shooter.INSTANCE.setShooter()
+                        new FollowPathCommand(robot.follower(),paths.Path5, false, 1.0),
+                        shooter.setShooter()
                 ),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
                 robot.shootAutonomous(),
                 new ParallelDeadlineGroup(
-                        new FollowPath(paths.Path6V2,false, 1.0),
-                        Intake.INSTANCE.intakeAutoOn(),
-                        Shooter.INSTANCE.stopShooter(),
-                        new SequentialGroup(
-                                new Delay(0.2),
-                                Shooter.INSTANCE.setShooter()
+                        new FollowPathCommand(robot.follower(),paths.Path6V2,false, 1.0),
+                        intake.intakeAutoOn(),
+                        shooter.stopShooter(),
+                        new SequentialCommandGroup(
+                                new WaitCommand(200),
+                                shooter.setShooter()
                         )
                 ),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
                 robot.shootAutonomous(),
-                Shooter.INSTANCE.stopShooter(),
-                Intake.INSTANCE.intakeAutoOff(),
-                Intake.INSTANCE.stopCommand(),
-                new FollowPath(paths.End, false, 1.0)
+                shooter.stopShooter(),
+                intake.intakeAutoOff(),
+                intake.stopCommand(),
+                new FollowPathCommand(robot.follower(),paths.End, false, 1.0)
 
         );
     }

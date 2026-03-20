@@ -6,6 +6,7 @@ import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 
 import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 import com.seattlesolvers.solverslib.util.InterpLUT;
@@ -18,6 +19,7 @@ import com.seattlesolvers.solverslib.hardware.motors.MotorGroup;
 @Configurable
 public class Shooter extends SubsystemBase {
     private  MotorGroup shooterMotors;
+    private final Chassis chassis;
     public PIDFController controlSystem = new PIDFController(0.004,0.0,0.0,0.00049);
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
     public double manualNear = 1000;
@@ -29,7 +31,8 @@ public class Shooter extends SubsystemBase {
     public double offset = 12;
 
 
-    public Shooter(HardwareMap hardwareMap){
+    public Shooter(HardwareMap hardwareMap, Chassis chassis){
+        this.chassis = chassis;
         shooterVelocities.add(35.0, 880.0);
         shooterVelocities.add(45.0, 860.0);
         shooterVelocities.add(55.0, 900.0);
@@ -65,8 +68,8 @@ public class Shooter extends SubsystemBase {
     }
 
 
-    public void stopShooter(){
-        controlSystem.setSetPoint(0);
+    public InstantCommand stopShooter(){
+        return new InstantCommand(()->controlSystem.setSetPoint(0));
     }
 
     public void slowShooter(){
@@ -90,9 +93,9 @@ public class Shooter extends SubsystemBase {
 
 
     public Command setShooter(){
-        return new RunCommand(()-> controlSystem.setSetPoint(shooterVelocities.get(Chassis.getDistanceToTarget()) + offset)).interruptOn(()-> isAtSpeed(
+        return new RunCommand(()-> controlSystem.setSetPoint(shooterVelocities.get(chassis.getDistanceToTarget()) + offset)).interruptOn(()-> isAtSpeed(
                 shooterVelocities.get(
-                        Chassis.getDistanceToTarget()
+                        chassis.getDistanceToTarget()
                 ) + offset
         ));
     }
