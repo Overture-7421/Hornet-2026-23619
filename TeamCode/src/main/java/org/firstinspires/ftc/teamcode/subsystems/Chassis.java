@@ -104,6 +104,7 @@ public class Chassis extends SubsystemBase {
                     turn,
                     false);
         })
+                .addRequirements(this)
                 .beforeStarting(() -> follower.startTeleopDrive(true))
                 .whenFinished(follower::breakFollowing);
     }

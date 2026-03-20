@@ -10,16 +10,19 @@ import org.firstinspires.ftc.teamcode.utils.MyRobot;
 public class TeleopMode extends CommandOpMode {
 
     public MyRobot robot;
+    public GamepadEx driver;
+    public MyRobot.Alliance color;
 
-    public GamepadEx driver = new GamepadEx(gamepad1);
 
     public TeleopMode(MyRobot.Alliance allianceColor){
-        robot = new MyRobot(allianceColor, hardwareMap, driver);
+        color = allianceColor;
 
     }
 
     @Override
     public void initialize(){
+        driver =  new GamepadEx(gamepad1);
+        robot = new MyRobot(color, hardwareMap, driver);
         robot.initTeleop();
         super.reset();
     }

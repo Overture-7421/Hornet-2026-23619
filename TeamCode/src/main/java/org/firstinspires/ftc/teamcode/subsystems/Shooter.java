@@ -48,11 +48,11 @@ public class Shooter extends SubsystemBase {
         shooterVelocities.add(155.0, 1260.0);
         shooterVelocities.add(160.0, 1280.0);
 
-        controlSystem.setSetPoint(shooterMotors.getVelocity());
         shooterMotors = new MotorGroup(
-                new Motor(hardwareMap, "flywheel_left", Motor.GoBILDA.BARE),
-                new Motor(hardwareMap, "flywheel_right", Motor.GoBILDA.BARE)
+                new Motor(hardwareMap, "shooterLeft", Motor.GoBILDA.BARE),
+                new Motor(hardwareMap, "shooterRight", Motor.GoBILDA.BARE)
         );
+        controlSystem.setSetPoint(shooterMotors.getVelocity());
 
     }
 

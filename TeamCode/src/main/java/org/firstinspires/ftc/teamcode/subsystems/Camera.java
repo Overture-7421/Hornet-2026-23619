@@ -30,7 +30,7 @@ public class Camera extends SubsystemBase {
     public Camera(HardwareMap hardwareMap, Follower follower, Chassis chassis) {
         this.chassis = chassis;
         this.follower = follower;
-        limelight = hardwareMap.get(Limelight3A.class, "limeligth");
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.setPollRateHz(100);
         limelight.pipelineSwitch(0);
         limelight.start();
