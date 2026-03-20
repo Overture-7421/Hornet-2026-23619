@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-
-
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
-
 
 import com.bylazar.configurables.annotations.Configurable;
 import com.pedropathing.geometry.Pose;
@@ -21,18 +18,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 @Configurable
 public class Camera extends SubsystemBase {
-    private Limelight3A limelight;
+    private final Limelight3A limelight;
+    private final Chassis chassis;
     private static final double CLOSE_POSITION_BLEND = 0.6;
     private static final double CLOSE_HEADING_BLEND = 0.6;
-
     private static final double FAR_POSITION_BLEND = 0.4;
     private static final double FAR_HEADING_BLEND = 0.9;
     private static final double CLOSE_DISTANCE_THRESHOLD = 120.0;  // inches
 
     private final Follower follower;
-    private final HardwareMap hardwareMap;
-    public Camera(HardwareMap hardwareMap, Follower follower) {
-        this.hardwareMap = hardwareMap;
+    public Camera(HardwareMap hardwareMap, Follower follower, Chassis chassis) {
+        this.chassis = chassis;
         this.follower = follower;
         limelight = hardwareMap.get(Limelight3A.class, "limeligth");
         limelight.setPollRateHz(100);
@@ -67,7 +63,7 @@ public class Camera extends SubsystemBase {
         Pose aprilTag = convertToPedro(new Pose(posePos.x, posePos.y, robotPose.getOrientation().getYaw(AngleUnit.RADIANS)));
         Pose current = follower.getPose();
 
-        boolean isClose = Chassis.INSTANCE.getDistanceToTarget() < CLOSE_DISTANCE_THRESHOLD;
+        boolean isClose = chassis.getDistanceToTarget() < CLOSE_DISTANCE_THRESHOLD;
         double posBlend = isClose ? CLOSE_POSITION_BLEND : FAR_POSITION_BLEND;
         double headBlend = isClose ? CLOSE_HEADING_BLEND : FAR_HEADING_BLEND;
 
