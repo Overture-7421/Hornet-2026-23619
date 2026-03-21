@@ -21,7 +21,7 @@ public class FarPlayOffs extends CommandOpMode {
     private Intake intake;
     private Shooter shooter;
     private Chassis chassis;
-    private final GamepadEx driver = new GamepadEx(gamepad1);
+    private GamepadEx driver;
     private FarSidePlayOffsPaths paths;
 
     public FarPlayOffs(MyRobot.Alliance allianceColor){
@@ -30,6 +30,7 @@ public class FarPlayOffs extends CommandOpMode {
 
     @Override
     public void initialize() {
+        driver = new GamepadEx(gamepad1);
         robot = new MyRobot(alliance, hardwareMap, driver);
         intake = robot.getIntake();
         shooter = robot.getShooter();

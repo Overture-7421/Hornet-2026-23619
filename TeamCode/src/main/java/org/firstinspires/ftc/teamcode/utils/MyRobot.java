@@ -4,6 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.ParallelDeadlineGroup;
@@ -70,15 +71,7 @@ public class MyRobot extends Robot {
     public void initTeleop(){
         chassis.setAllianceColor(this.alliance, false);
         chassis.initPedro(false, new Pose(8, 8));
-        setBindings();
-    }
 
-    public void initAuto(Pose starting){
-        chassis.setAllianceColor(this.alliance, true);
-        chassis.initPedro(true, starting);
-    }
-
-    public void setBindings(){
         chassis.setDefaultCommand(chassis.drive());
 
         new Trigger(()->driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.3)
@@ -104,11 +97,14 @@ public class MyRobot extends Robot {
                 .whenInactive(chassis.normalMode());
     }
 
+    public void initAuto(Pose starting){
+        chassis.setAllianceColor(this.alliance, true);
+        chassis.initPedro(true, starting);
+    }
+
     public void onEnd(){
         chassis.setLastPose();
     }
-
-
 
     public SequentialCommandGroup shootAutonomous(){
         return new SequentialCommandGroup(
@@ -161,5 +157,9 @@ public class MyRobot extends Robot {
                 shooter.setShooterManualFar(),
                 intake.shootCommand()
         );
+    }
+
+    public void updateLoop(){
+        CommandScheduler.getInstance().run();
     }
 }

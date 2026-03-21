@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.utils.MyRobot.Alliance;
 public class Chassis extends SubsystemBase {
     private final Follower follower;
     private final GamepadEx driver;
-    public double speedMultiplier;
+    public double speedMultiplier = 1;
     public double turnMultiplier = -0.7;
     private double allianceMultiplier = -1;
     public Pose target = new Pose(8,136);
@@ -95,12 +95,11 @@ public class Chassis extends SubsystemBase {
             } else {
                 stableFrames = 0;
                 turn = driver.getRightX() * turnMultiplier;
-
             }
 
             follower.setTeleOpDrive(
                     driver.getLeftY() * allianceMultiplier * speedMultiplier,
-                    driver.getLeftX() * allianceMultiplier * speedMultiplier,
+                    driver.getLeftX() * -allianceMultiplier * speedMultiplier,
                     turn,
                     false);
         })
