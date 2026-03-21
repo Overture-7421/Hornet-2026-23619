@@ -18,9 +18,9 @@ import com.seattlesolvers.solverslib.hardware.motors.MotorGroup;
 
 @Configurable
 public class Shooter extends SubsystemBase {
-    private  MotorGroup shooterMotors;
+    private final MotorGroup shooterMotors;
     private final Chassis chassis;
-    public PIDFController controlSystem = new PIDFController(0.004,0.0,0.0,0.00049);
+    public static PIDFController controlSystem = new PIDFController(0.004,0.0,0.0,0.00049);
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
     public double manualNear = 1000;
     public double manualFar = 1250;
@@ -47,6 +47,7 @@ public class Shooter extends SubsystemBase {
         shooterVelocities.add(145.0, 1240.0);
         shooterVelocities.add(155.0, 1260.0);
         shooterVelocities.add(160.0, 1280.0);
+        shooterVelocities.createLUT();
 
         shooterMotors = new MotorGroup(
                 new Motor(hardwareMap, "shooterLeft", Motor.GoBILDA.BARE),

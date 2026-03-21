@@ -6,10 +6,10 @@ import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.seattlesolvers.solverslib.command.Command;
-import com.seattlesolvers.solverslib.command.FunctionalCommand;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.RunCommand;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
+import com.seattlesolvers.solverslib.controller.PIDController;
 import com.seattlesolvers.solverslib.gamepad.GamepadEx;
 
 import org.firstinspires.ftc.teamcode.utils.PoseStorage;
@@ -26,14 +26,9 @@ public class Chassis extends SubsystemBase {
     public Pose blueTarget = new Pose(8,136);
 
     public Pose redTarget = blueTarget.mirror();
-
-    private int stableFrames = 0;
-    public double alignMinSpeed = 0.1;
-    public double alignMaxSpeed = 1.0;
-    public double deadband = 3.0;
-    private static final int REQUIRED_STABLE_FRAMES = 20;
     public boolean isAlignOn = false;
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
+    private final PIDController pid = new PIDController(1.0, 0.0, 0.055);
 
     public Chassis(Follower follower, GamepadEx driver) {
         this.follower = follower;
@@ -49,6 +44,7 @@ public class Chassis extends SubsystemBase {
         telemetry.addData("TargetHeading", Math.toDegrees(calculateHeading(target)));
         telemetry.addData("ChassisPos", follower.getPose());
 //        telemetry.addData("Is at target", Chassis.INSTANCE.isAtTargetHeading());
+
     }
 
     public void setAllianceColor(Alliance allianceColor, boolean isAuto) {
@@ -62,14 +58,7 @@ public class Chassis extends SubsystemBase {
     }
 
     private double calculateAlignmentTurn() {
-        double errorRad = getSignedError();
-        double errorDeg = Math.abs(Math.toDegrees(errorRad));
-
-        if (errorDeg < deadband) return 0;
-
-        double speed = Math.max(alignMinSpeed, Math.min(alignMaxSpeed, errorDeg / 90));
-
-        return speed * Math.signum(errorRad);
+        return pid.calculate(follower.getHeading(), updateHeadingGoal());
     }
 
     public InstantCommand slowMode(){
@@ -93,7 +82,6 @@ public class Chassis extends SubsystemBase {
             if (isAlignOn) {
                 turn = calculateAlignmentTurn();
             } else {
-                stableFrames = 0;
                 turn = driver.getRightX() * turnMultiplier;
             }
 
@@ -121,14 +109,9 @@ public class Chassis extends SubsystemBase {
         })
                 .beforeStarting(() -> {
                     follower.startTeleopDrive(true);
-                    resetFrames();
                 })
                 .whenFinished(follower::breakFollowing)
                 .interruptOn(this::isAtTargetHeading);
-    }
-
-    public void resetFrames(){
-        stableFrames = 0;
     }
 
     public void initPedro(boolean isAuto, Pose starting) {
@@ -146,28 +129,15 @@ public class Chassis extends SubsystemBase {
         return Math.atan2(tempTarget.getY() - robotPose.getY(), tempTarget.getX() - robotPose.getX());
     }
 
-    public double getSignedError() {
-        double targetHeading = calculateHeading(target);
-        double robotHeading = follower.getHeading();
-
-        return Math.atan2(
-                Math.sin(targetHeading - robotHeading),
-                Math.cos(targetHeading - robotHeading)
-        );
-    }
-
-    public double getError() {
-        return Math.abs(getSignedError());
+    public double getError(){
+        return Math.abs(Math.atan2(
+                Math.sin(calculateHeading(target) - follower.getHeading()),
+                Math.cos(calculateHeading(target) - follower.getHeading())
+        ));
     }
 
     public boolean isAtTargetHeading() {
-        if (Math.toDegrees(getError()) < deadband) {
-            stableFrames++;
-            return stableFrames >= REQUIRED_STABLE_FRAMES;
-        } else {
-            stableFrames = 0;
-            return false;
-        }
+        return getError() < Math.toRadians(3);
     }
     public double getDistanceToTarget() {
         return follower.getPose().distanceFrom(target);
@@ -175,5 +145,17 @@ public class Chassis extends SubsystemBase {
 
     public void setLastPose() {
         PoseStorage.currentPose = follower.getPose();
+    }
+
+    public double updateHeadingGoal() {
+        double robotHeading = follower.getHeading();
+        double targetHeading = calculateHeading(target);
+
+        double error = Math.atan2(
+                Math.sin(targetHeading - robotHeading),
+                Math.cos(targetHeading - robotHeading)
+        );
+
+        return robotHeading + error;
     }
 }
