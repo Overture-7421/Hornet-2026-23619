@@ -54,13 +54,15 @@ public class Camera extends SubsystemBase {
     }
 
     private void updatePoseWithAprilTag() {
+        limelight.updateRobotOrientation(follower.getHeading());
         LLResult result = limelight.getLatestResult();
         if (result == null || !result.isValid()) return;
 
-        Pose3D robotPose = result.getBotpose();
+        double newHeading = result.getBotpose().getOrientation().getYaw(AngleUnit.RADIANS);
+        Pose3D robotPose = result.getBotpose_MT2();
         Position posePos = robotPose.getPosition().toUnit(DistanceUnit.INCH);
 
-        Pose aprilTag = convertToPedro(new Pose(posePos.x, posePos.y, robotPose.getOrientation().getYaw(AngleUnit.RADIANS)));
+        Pose aprilTag = convertToPedro(new Pose(posePos.x, posePos.y, newHeading));
         Pose current = follower.getPose();
 
         boolean isClose = chassis.getDistanceToTarget() < CLOSE_DISTANCE_THRESHOLD;
