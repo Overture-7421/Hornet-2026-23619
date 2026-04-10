@@ -2,8 +2,13 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.ftc.InvertedFTCCoordinates;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
 import com.bylazar.configurables.annotations.Configurable;
@@ -20,11 +25,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 public class Camera extends SubsystemBase {
     private final Limelight3A limelight;
     private final Chassis chassis;
-    private static final double CLOSE_POSITION_BLEND = 0.6;
-    private static final double CLOSE_HEADING_BLEND = 0.6;
-    private static final double FAR_POSITION_BLEND = 0.4;
-    private static final double FAR_HEADING_BLEND = 0.9;
+    public static double CLOSE_POSITION_BLEND = 0.6;
+    public static double CLOSE_HEADING_BLEND = 0.6;
+    public static double FAR_POSITION_BLEND = 0.4;
+    public static double FAR_HEADING_BLEND = 0.9;
     private static final double CLOSE_DISTANCE_THRESHOLD = 120.0;  // inches
+    private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
     private final Follower follower;
     public Camera(HardwareMap hardwareMap, Follower follower, Chassis chassis) {
@@ -40,6 +46,7 @@ public class Camera extends SubsystemBase {
 
     @Override
     public void periodic() {
+
         updatePoseWithAprilTag();
     }
 
@@ -48,15 +55,18 @@ public class Camera extends SubsystemBase {
         return rotatedPose.plus(new Pose(72, 72));
     }
 
-
     private double normalizeAngle(double angle) {
         return Math.atan2(Math.sin(angle), Math.cos(angle));
     }
 
     private void updatePoseWithAprilTag() {
+//        double heading = follower.getPose().getAsCoordinateSystem(InvertedFTCCoordinates.INSTANCE).getHeading() * (180 / Math.PI);
+//        telemetry.addData("Megatag2 Heading", heading);
+//        limelight.updateRobotOrientation(heading);
         LLResult result = limelight.getLatestResult();
         if (result == null || !result.isValid()) return;
 
+//        double newHeading = result.getBotpose().getOrientation().getYaw(AngleUnit.RADIANS);
         Pose3D robotPose = result.getBotpose();
         Position posePos = robotPose.getPosition().toUnit(DistanceUnit.INCH);
 

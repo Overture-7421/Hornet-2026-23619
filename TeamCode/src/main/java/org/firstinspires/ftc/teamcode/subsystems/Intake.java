@@ -53,7 +53,7 @@ public class Intake extends SubsystemBase {
 
     public InstantCommand shootCommand(){
         return new InstantCommand(() -> {
-                        topMotor.set(0.9);
+                        topMotor.set(1);
                         intakeMotor.set(1);
                 });
     }

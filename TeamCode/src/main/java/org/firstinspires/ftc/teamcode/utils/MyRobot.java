@@ -108,7 +108,6 @@ public class MyRobot extends Robot {
 
     public SequentialCommandGroup shootAutonomous(){
         return new SequentialCommandGroup(
-                new InstantCommand(chassis::resetFrames),
                 chassis.autoAlign(),
                 shooter.setShooter(),
                 intake.shootCommand(),
@@ -135,7 +134,6 @@ public class MyRobot extends Robot {
     public SequentialCommandGroup automaticShoot(){
         return new SequentialCommandGroup(
                 new InstantCommand(() -> chassis.isAlignOn = true),
-                new InstantCommand(chassis::resetFrames),
                 new ParallelDeadlineGroup(
                         new WaitUntilCommand(chassis::isAtTargetHeading),
                         shooter.setShooter()
