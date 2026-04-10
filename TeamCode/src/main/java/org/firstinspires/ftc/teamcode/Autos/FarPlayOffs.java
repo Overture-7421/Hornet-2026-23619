@@ -30,6 +30,7 @@ public class FarPlayOffs extends CommandOpMode {
 
     @Override
     public void initialize() {
+        super.reset();
         driver = new GamepadEx(gamepad1);
         robot = new MyRobot(alliance, hardwareMap, driver);
         intake = robot.getIntake();
@@ -37,14 +38,14 @@ public class FarPlayOffs extends CommandOpMode {
         chassis = robot.getChassis();
         paths = new FarSidePlayOffsPaths(robot.follower(), alliance);
         robot.initAuto(paths.startPose);
-        super.reset();
 
         shooter.offset = 0;
     }
 
     @Override
     public void run() {
-        CommandScheduler.getInstance().schedule(autoCommand());
+        robot.run();
+        autoCommand().schedule();
     }
 
     @Override

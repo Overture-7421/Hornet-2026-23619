@@ -31,6 +31,7 @@ public class ClosePlayOffs extends CommandOpMode {
 
     @Override
     public void initialize() {
+        super.reset();
         driver = new GamepadEx(gamepad1);
         robot = new MyRobot(alliance, hardwareMap, driver);
         intake = robot.getIntake();
@@ -38,13 +39,13 @@ public class ClosePlayOffs extends CommandOpMode {
         chassis = robot.getChassis();
         paths = new CloseSidePaths(robot.follower(), alliance);
         robot.initAuto(paths.startPose);
-        super.reset();
 
     }
 
     @Override
     public void run() {
-        CommandScheduler.getInstance().schedule(autoCommand());
+        robot.run();
+        autoCommand().schedule();
     }
 
     @Override

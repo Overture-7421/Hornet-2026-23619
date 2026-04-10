@@ -29,6 +29,8 @@ public class FarAuto extends CommandOpMode {
 
     @Override
     public void initialize() {
+        super.reset();
+
         driver = new GamepadEx(gamepad1);
         robot = new MyRobot(alliance, hardwareMap, driver);
         intake = robot.getIntake();
@@ -36,7 +38,6 @@ public class FarAuto extends CommandOpMode {
         chassis = robot.getChassis();
         paths = new FarSidePaths(robot.follower(), alliance);
         robot.initAuto(paths.startPose);
-        super.reset();
 
         shooter.offset = 5;
         
@@ -44,7 +45,8 @@ public class FarAuto extends CommandOpMode {
 
     @Override
     public void run() {
-        CommandScheduler.getInstance().schedule(autoCommand());
+        robot.run();
+        autoCommand().schedule();
     }
 
     @Override
