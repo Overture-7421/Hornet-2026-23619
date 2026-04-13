@@ -40,12 +40,87 @@ public class FarPlayOffs extends CommandOpMode {
         robot.initAuto(paths.startPose);
 
         shooter.offset = 0;
+
+        SequentialCommandGroup autoCommand = new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path1, false, 0.7),
+                            shooter.setShooter()
+                    ),
+                    robot.shootAutonomous(),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path2, false, 0.827),
+                            intake.intakeAutoOn(),
+                            shooter.stopShooter(),
+                            new SequentialCommandGroup(
+                                    new WaitCommand(500),
+                                    shooter.setShooter()
+                            )
+                    ),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    robot.shootAutonomous(),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path3, false, 1.0),
+                            intake.intakeAutoOn(),
+                            shooter.stopShooter()
+                    ),
+                    new WaitCommand(400),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path4, false, 1.0),
+                            new SequentialCommandGroup(
+                                    new WaitCommand(700),
+                                    shooter.setShooter()
+                            )
+                    ),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    robot.shootAutonomous(),
+                    new WaitCommand(400),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path3, false, 1.0),
+                            intake.intakeAutoOn(),
+                            shooter.stopShooter()
+                    ),
+                    new WaitCommand(200),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path4, false, 1.0),
+                            new SequentialCommandGroup(
+                                    new WaitCommand(700),
+                                    shooter.setShooter()
+                            )
+                    ),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    robot.shootAutonomous(),
+                    new WaitCommand(400),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path3, false, 1.0),
+                            intake.intakeAutoOn(),
+                            shooter.stopShooter()
+                    ),
+                    new WaitCommand(200),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path4, false, 1.0),
+                            new SequentialCommandGroup(
+                                    new WaitCommand(700),
+                                    shooter.setShooter()
+                            )
+                    ),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    robot.shootAutonomous(),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(), paths.Path6, false, 1.0),
+                            shooter.stopShooter()
+                    )
+            );
+       schedule(autoCommand);
     }
 
     @Override
     public void run() {
         robot.run();
-        autoCommand().schedule();
+
     }
 
     @Override
@@ -54,79 +129,5 @@ public class FarPlayOffs extends CommandOpMode {
         shooter.offset = 15;
     }
 
-    public SequentialCommandGroup autoCommand(){
-        return new SequentialCommandGroup(
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path1, false, 0.7),
-                        shooter.setShooter()
-                ),
-                robot.shootAutonomous(),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path2, false, 0.827),
-                        intake.intakeAutoOn(),
-                        shooter.stopShooter(),
-                        new SequentialCommandGroup(
-                                new WaitCommand(500),
-                                shooter.setShooter()
-                        )
-                ),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                robot.shootAutonomous(),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path3, false, 1.0),
-                        intake.intakeAutoOn(),
-                        shooter.stopShooter()
-                ),
-                new WaitCommand(400),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path4, false, 1.0),
-                        new SequentialCommandGroup(
-                                new WaitCommand(700),
-                                shooter.setShooter()
-                        )
-                ),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                robot.shootAutonomous(),
-                new WaitCommand(400),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path3, false, 1.0),
-                        intake.intakeAutoOn(),
-                        shooter.stopShooter()
-                ),
-                new WaitCommand(200),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path4, false, 1.0),
-                        new SequentialCommandGroup(
-                                new WaitCommand(700),
-                                shooter.setShooter()
-                        )
-                ),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                robot.shootAutonomous(),
-                new WaitCommand(400),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path3, false, 1.0),
-                        intake.intakeAutoOn(),
-                        shooter.stopShooter()
-                ),
-                new WaitCommand(200),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path4, false, 1.0),
-                        new SequentialCommandGroup(
-                                new WaitCommand(700),
-                                shooter.setShooter()
-                        )
-                ),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                robot.shootAutonomous(),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(), paths.Path6, false, 1.0),
-                        shooter.stopShooter()
-                )
-        );
+
     }
-}

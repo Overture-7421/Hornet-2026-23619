@@ -26,6 +26,7 @@ public class ClosePlayOffs extends CommandOpMode {
     private CloseSidePaths paths;
 
     public ClosePlayOffs(MyRobot.Alliance allianceColor){
+
         alliance = allianceColor;
     }
 
@@ -39,13 +40,81 @@ public class ClosePlayOffs extends CommandOpMode {
         chassis = robot.getChassis();
         paths = new CloseSidePaths(robot.follower(), alliance);
         robot.initAuto(paths.startPose);
+        SequentialCommandGroup autoCommand = new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(),paths.Path1, false, 0.7),
+                            shooter.setShooter()
+                    ),
+                    robot.shootAutonomous(),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(),paths.Path2,false, 1.0),
+                            intake.intakeAutoOn(),
+                            shooter.stopShooter(),
+                            new SequentialCommandGroup(
+                                    new WaitCommand(500),
+                                    shooter.setShooter()
+                            )
+                    ),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    robot.shootAutonomous(),
+                    new FollowPathCommand(robot.follower(),paths.Path3,false, 1.0),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(),paths.Path4,false, 1.0),
+                            intake.intakeAutoOn(),
+                            shooter.stopShooter()
+                    ),
+                    new WaitCommand(1000),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(),paths.Path5, false, 1.0),
+                            shooter.setShooter()
+                    ),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    robot.shootAutonomous(),
+                    new FollowPathCommand(robot.follower(),paths.Path3,false, 1.0),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(),paths.Path4,false, 1.0),
+                            intake.intakeAutoOn(),
+                            shooter.stopShooter()
+                    ),
+                    new WaitCommand(1000),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(),paths.Path5, false, 1.0),
+                            shooter.setShooter()
+                    ),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    robot.shootAutonomous(),
+                    new ParallelDeadlineGroup(
+                            new FollowPathCommand(robot.follower(),paths.Path6V2,false, 1.0),
+                            intake.intakeAutoOn(),
+                            shooter.stopShooter(),
+                            new SequentialCommandGroup(
+                                    new WaitCommand(200),
+                                    shooter.setShooter()
+                            )
+                    ),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    robot.shootAutonomous(),
+                    shooter.stopShooter(),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
+                    new FollowPathCommand(robot.follower(),paths.End, false, 1.0)
 
-    }
+            );
+             schedule(autoCommand);
+        }
+
+
+
+
 
     @Override
     public void run() {
         robot.run();
-        autoCommand().schedule();
+
     }
 
     @Override
@@ -53,72 +122,7 @@ public class ClosePlayOffs extends CommandOpMode {
         chassis.setLastPose();
     }
 
-    public SequentialCommandGroup autoCommand(){
-        return new SequentialCommandGroup(
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(),paths.Path1, false, 0.7),
-                        shooter.setShooter()
-                ),
-                robot.shootAutonomous(),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(),paths.Path2,false, 1.0),
-                        intake.intakeAutoOn(),
-                        shooter.stopShooter(),
-                        new SequentialCommandGroup(
-                                new WaitCommand(500),
-                                shooter.setShooter()
-                        )
-                ),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                robot.shootAutonomous(),
-                new FollowPathCommand(robot.follower(),paths.Path3,false, 1.0),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(),paths.Path4,false, 1.0),
-                        intake.intakeAutoOn(),
-                        shooter.stopShooter()
-                ),
-                new WaitCommand(1000),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(),paths.Path5, false, 1.0),
-                        shooter.setShooter()
-                ),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                robot.shootAutonomous(),
-                new FollowPathCommand(robot.follower(),paths.Path3,false, 1.0),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(),paths.Path4,false, 1.0),
-                        intake.intakeAutoOn(),
-                        shooter.stopShooter()
-                ),
-                new WaitCommand(1000),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(),paths.Path5, false, 1.0),
-                        shooter.setShooter()
-                ),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                robot.shootAutonomous(),
-                new ParallelDeadlineGroup(
-                        new FollowPathCommand(robot.follower(),paths.Path6V2,false, 1.0),
-                        intake.intakeAutoOn(),
-                        shooter.stopShooter(),
-                        new SequentialCommandGroup(
-                                new WaitCommand(200),
-                                shooter.setShooter()
-                        )
-                ),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                robot.shootAutonomous(),
-                shooter.stopShooter(),
-                intake.intakeAutoOff(),
-                intake.stopCommand(),
-                new FollowPathCommand(robot.follower(),paths.End, false, 1.0)
 
-        );
-    }
 }
 
 
