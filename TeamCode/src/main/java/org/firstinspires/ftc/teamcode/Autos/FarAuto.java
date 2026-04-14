@@ -42,9 +42,9 @@ public class FarAuto extends CommandOpMode {
         SequentialCommandGroup autoCommand = new SequentialCommandGroup(
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path1, false, 0.7),
-                            shooter.setShooterManualFar()
+                            shooter.setShooter()
                     ),
-                    robot.shootAutonomousFar(),
+                    robot.shootAutonomous(),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path2, false, 0.8),
                             intake.intakeAutoOn(),
@@ -55,9 +55,9 @@ public class FarAuto extends CommandOpMode {
                     intake.stopCommand(),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path3, false, 0.8),
-                            shooter.setShooterManualFar()
+                            shooter.setShooter()
                     ),
-                    robot.shootAutonomousFar(),
+                    robot.shootAutonomous(),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path4, false, 0.7),
                             shooter.stopShooter()
@@ -72,9 +72,9 @@ public class FarAuto extends CommandOpMode {
                     intake.stopCommand(),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path6, false, 0.8),
-                            shooter.setShooterManualFar()
+                            shooter.setShooter()
                     ),
-                    robot.shootAutonomousFar(),
+                    robot.shootAutonomous(),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path7, false, 0.8),
                             intake.intakeAutoOn(),
@@ -84,9 +84,9 @@ public class FarAuto extends CommandOpMode {
                     intake.stopCommand(),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path8, false, 0.8),
-                            shooter.setShooterManualFar()
+                            shooter.setShooter()
                     ),
-                    robot.shootAutonomousFar(),
+                    robot.shootAutonomous(),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path9, false, 0.8),
                             intake.intakeAutoOn(),

@@ -59,12 +59,13 @@ public class ClosePlayOffs extends CommandOpMode {
                     intake.stopCommand(),
                     robot.shootAutonomous(),
                     new FollowPathCommand(robot.follower(),paths.Path3,false, 1.0),
+
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(),paths.Path4,false, 1.0),
                             intake.intakeAutoOn(),
                             shooter.stopShooter()
                     ),
-                    new WaitCommand(1000),
+                    new WaitCommand(1200),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(),paths.Path5, false, 1.0),
                             shooter.setShooter()
@@ -73,12 +74,13 @@ public class ClosePlayOffs extends CommandOpMode {
                     intake.stopCommand(),
                     robot.shootAutonomous(),
                     new FollowPathCommand(robot.follower(),paths.Path3,false, 1.0),
+                new WaitCommand(150),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(),paths.Path4,false, 1.0),
                             intake.intakeAutoOn(),
                             shooter.stopShooter()
                     ),
-                    new WaitCommand(1000),
+                    new WaitCommand(1200),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(),paths.Path5, false, 1.0),
                             shooter.setShooter()
