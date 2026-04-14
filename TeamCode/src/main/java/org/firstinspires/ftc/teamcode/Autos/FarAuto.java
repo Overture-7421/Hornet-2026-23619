@@ -108,6 +108,5 @@ public class FarAuto extends CommandOpMode {
         shooter.offset = 15;
     }
 
-
     }
 
