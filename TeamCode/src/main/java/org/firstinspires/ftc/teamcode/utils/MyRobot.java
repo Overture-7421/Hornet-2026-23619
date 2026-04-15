@@ -95,11 +95,14 @@ public class MyRobot extends Robot {
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
                 .whenActive(chassis.slowMode())
                 .whenInactive(chassis.normalMode());
+
+        camera.setActive(true);
     }
 
     public void initAuto(Pose starting){
         chassis.setAllianceColor(this.alliance, true);
         chassis.initPedro(true, starting);
+        camera.setActive(false);
     }
 
     public void onEnd(){

@@ -73,8 +73,10 @@ public class Shooter extends SubsystemBase {
         return new InstantCommand(()->controlSystem.setSetPoint(0));
     }
 
-    public void slowShooter(){
-        controlSystem.setSetPoint(600);
+    public InstantCommand slowShooter(){
+     return new InstantCommand(()-> {
+         controlSystem.setSetPoint(600);
+     });
     }
 
     public boolean isAtSpeed(double target) {

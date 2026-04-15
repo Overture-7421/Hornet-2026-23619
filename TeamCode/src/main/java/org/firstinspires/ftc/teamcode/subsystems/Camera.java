@@ -32,6 +32,8 @@ public class Camera extends SubsystemBase {
     private static final double CLOSE_DISTANCE_THRESHOLD = 120.0;  // inches
     private final TelemetryManager telemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
+    private boolean isActive = true;
+
     private final Follower follower;
     public Camera(HardwareMap hardwareMap, Follower follower, Chassis chassis) {
         this.chassis = chassis;
@@ -50,6 +52,10 @@ public class Camera extends SubsystemBase {
         updatePoseWithAprilTag();
     }
 
+    public void setActive(boolean isActive){
+        this.isActive =  isActive;
+    }
+
     public Pose convertToPedro(Pose pose) {
         Pose rotatedPose = pose.rotate(-Math.PI / 2, true);
         return rotatedPose.plus(new Pose(72, 72));
@@ -60,27 +66,25 @@ public class Camera extends SubsystemBase {
     }
 
     private void updatePoseWithAprilTag() {
-//        double heading = follower.getPose().getAsCoordinateSystem(InvertedFTCCoordinates.INSTANCE).getHeading() * (180 / Math.PI);
-//        telemetry.addData("Megatag2 Heading", heading);
-//        limelight.updateRobotOrientation(heading);
-        LLResult result = limelight.getLatestResult();
-        if (result == null || !result.isValid()) return;
+        if (isActive) {
+            LLResult result = limelight.getLatestResult();
+            if (result == null || !result.isValid()) return;
 
-//        double newHeading = result.getBotpose().getOrientation().getYaw(AngleUnit.RADIANS);
-        Pose3D robotPose = result.getBotpose();
-        Position posePos = robotPose.getPosition().toUnit(DistanceUnit.INCH);
+            Pose3D robotPose = result.getBotpose();
+            Position posePos = robotPose.getPosition().toUnit(DistanceUnit.INCH);
 
-        Pose aprilTag = convertToPedro(new Pose(posePos.x, posePos.y, robotPose.getOrientation().getYaw(AngleUnit.RADIANS)));
-        Pose current = follower.getPose();
+            Pose aprilTag = convertToPedro(new Pose(posePos.x, posePos.y, robotPose.getOrientation().getYaw(AngleUnit.RADIANS)));
+            Pose current = follower.getPose();
 
-        boolean isClose = chassis.getDistanceToTarget() < CLOSE_DISTANCE_THRESHOLD;
-        double posBlend = isClose ? CLOSE_POSITION_BLEND : FAR_POSITION_BLEND;
-        double headBlend = isClose ? CLOSE_HEADING_BLEND : FAR_HEADING_BLEND;
+            boolean isClose = chassis.getDistanceToTarget() < CLOSE_DISTANCE_THRESHOLD;
+            double posBlend = isClose ? CLOSE_POSITION_BLEND : FAR_POSITION_BLEND;
+            double headBlend = isClose ? CLOSE_HEADING_BLEND : FAR_HEADING_BLEND;
 
-        follower.setPose(new Pose(
-                current.getX() + posBlend * (aprilTag.getX() - current.getX()),
-                current.getY() + posBlend * (aprilTag.getY() - current.getY()),
-                current.getHeading() + headBlend * normalizeAngle(aprilTag.getHeading() - current.getHeading())
-        ));
+            follower.setPose(new Pose(
+                    current.getX() + posBlend * (aprilTag.getX() - current.getX()),
+                    current.getY() + posBlend * (aprilTag.getY() - current.getY()),
+                    current.getHeading() + headBlend * normalizeAngle(aprilTag.getHeading() - current.getHeading())
+            ));
+        }
     }
 }
