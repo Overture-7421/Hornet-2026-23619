@@ -83,6 +83,12 @@ public class MyRobot extends Robot {
         driver.getGamepadButton(GamepadKeys.Button.B)
                 .whenHeld(manualShootNear())
                 .whenReleased(stopShooting());
+        driver.getGamepadButton(GamepadKeys.Button.Y)
+                .whenHeld(new ParallelCommandGroup(
+                        new InstantCommand(() -> chassis.isAlignOn = true),
+                        shooter.prepareShooter()
+                ))
+                .whenReleased(new InstantCommand(() -> chassis.isAlignOn = false));
         new Trigger(()->driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.3)
                 .whileActiveOnce(intake.intakeCommand())
                 .whenInactive(intake.stopCommand());
@@ -112,6 +118,7 @@ public class MyRobot extends Robot {
     public SequentialCommandGroup shootAutonomous(){
         return new SequentialCommandGroup(
                 chassis.autoAlign(),
+                shooter.setShooter(),
                 shooter.setShooter(),
                 intake.shootCommand(),
                 new WaitCommand(1000)

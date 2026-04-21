@@ -102,6 +102,9 @@ public class Shooter extends SubsystemBase {
                 ) + offset
         ));
     }
+    public Command prepareShooter(){
+        return new RunCommand(()-> controlSystem.setSetPoint(shooterVelocities.get(chassis.getDistanceToTarget()) + offset));
+    }
 
     public Command setShooterManualNear(){
         return new RunCommand(()->controlSystem.setSetPoint(manualNear)).interruptOn(()-> isAtSpeed(manualNear));
