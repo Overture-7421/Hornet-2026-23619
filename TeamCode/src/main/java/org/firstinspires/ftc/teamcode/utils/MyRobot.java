@@ -124,7 +124,6 @@ public class MyRobot extends Robot {
         return new SequentialCommandGroup(
                 chassis.autoAlign(),
                 shooter.setShooter(),
-                shooter.setShooter(),
                 intake.shootCommand(),
                 new WaitCommand(1000)
                 );
