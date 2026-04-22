@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.utils;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.InstantCommand;
@@ -87,8 +88,12 @@ public class MyRobot extends Robot {
                 .whenHeld(new ParallelCommandGroup(
                         new InstantCommand(() -> chassis.isAlignOn = true),
                         shooter.prepareShooter()
-                ))
-                .whenReleased(new InstantCommand(() -> chassis.isAlignOn = false));
+                ));
+        driver.getGamepadButton(GamepadKeys.Button.Y).and(new Trigger(()->driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) >= 0.0))
+                .whenInactive(new ParallelCommandGroup(
+                        new InstantCommand(() -> chassis.isAlignOn = false),
+                        shooter.stopShooter()
+                ));
         new Trigger(()->driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.3)
                 .whileActiveOnce(intake.intakeCommand())
                 .whenInactive(intake.stopCommand());
