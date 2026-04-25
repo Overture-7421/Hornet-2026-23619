@@ -51,15 +51,17 @@ public class CloseAuto extends CommandOpMode {
                             intake.intakeAutoOn(),
                             shooter.stopShooter(),
                             new SequentialCommandGroup(
-                                    new WaitCommand(500),
+                                    new WaitCommand(600),
                                     shooter.setShooter()
                             )
                     ),
                     intake.intakeAutoOff(),
                     intake.stopCommand(),
                     robot.shootAutonomous(),
+                    intake.intakeAutoOff(),
+                    intake.stopCommand(),
                     new FollowPathCommand(robot.follower(), paths.Path3,false, 1.0),
-                new WaitCommand(250),
+                    new WaitCommand(350),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path4,false, 1.0),
                             intake.intakeAutoOn(),

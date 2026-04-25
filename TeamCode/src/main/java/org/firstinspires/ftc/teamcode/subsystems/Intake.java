@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
 
         if (autoIntake){
             if (checkTopSensor()) {
-                topMotor.set(-0.1);
+                topMotor.set(-0.2);
                 intakeMotor.set(0.8);
             } else {
                 topMotor.set(0.3);
@@ -48,7 +48,7 @@ public class Intake extends SubsystemBase {
     }
 
     private boolean checkTopSensor(){
-        return topSensor.getDistance(DistanceUnit.CM) < 5;
+        return topSensor.getDistance(DistanceUnit.CM) < 5.5;
     }
 
     public InstantCommand shootCommand(){

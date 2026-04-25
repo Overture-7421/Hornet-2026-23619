@@ -81,8 +81,8 @@
     {
       "id": "line-axwud97wtuq",
       "endPoint": {
-        "x": 23.545023696682463,
-        "y": 66.02843601895735,
+        "x": 18.03489908609056,
+        "y": 66.91005595665206,
         "heading": "linear",
         "reverse": false,
         "startDeg": 136,
@@ -95,7 +95,7 @@
         }
       ],
       "color": "#966685",
-      "locked": true,
+      "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
@@ -220,8 +220,8 @@
     {
       "id": "line-4wevfndg2px",
       "endPoint": {
-        "x": 59.715639810426545,
-        "y": 102.36966824644551,
+        "x": 59.93604479485022,
+        "y": 106.55736295049535,
         "heading": "linear",
         "reverse": false,
         "startDeg": 180,
@@ -280,26 +280,50 @@
       "lineId": "line-4wevfndg2px"
     }
   ],
+  "pathChains": [
+    {
+      "id": "chain-moewzjfa-9cde4x",
+      "name": "Main Chain",
+      "color": "#78DB79",
+      "lineIds": [
+        "line-86slrekzqfy",
+        "line-9df6wn9ey0t",
+        "line-oiq27c5mbpm",
+        "line-axwud97wtuq",
+        "line-unijnl699hb",
+        "line-5zydcsw1ekf",
+        "line-g8g3aztolj",
+        "line-ebllnrkopg",
+        "line-6xxugl0it7l",
+        "line-4wevfndg2px"
+      ]
+    }
+  ],
   "settings": {
     "xVelocity": 75,
     "yVelocity": 65,
     "aVelocity": 3.141592653589793,
     "kFriction": 0.1,
-    "rWidth": 17,
-    "rHeight": 17,
+    "rWidth": 18,
+    "rHeight": 18,
     "safetyMargin": 1,
     "maxVelocity": 40,
     "maxAcceleration": 30,
     "maxDeceleration": 30,
     "fieldMap": "decode.webp",
     "robotImage": "/robot.png",
-    "theme": "auto",
+    "theme": "dark",
     "showGhostPaths": false,
     "showOnionLayers": false,
     "onionLayerSpacing": 3,
     "onionColor": "#dc2626",
-    "onionNextPointOnly": false
+    "onionNextPointOnly": false,
+    "showHeadingArrow": false,
+    "headingArrowLength": 50,
+    "headingArrowColor": "#ffffff",
+    "headingArrowThickness": 2,
+    "pathOpacity": 1
   },
   "version": "1.2.1",
-  "timestamp": "2026-02-05T22:52:10.674Z"
+  "timestamp": "2026-04-25T22:34:09.078Z"
 }
