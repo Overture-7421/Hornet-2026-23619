@@ -61,7 +61,7 @@ public class CloseAuto extends CommandOpMode {
                     intake.intakeAutoOff(),
                     intake.stopCommand(),
                     new FollowPathCommand(robot.follower(), paths.Path3,false, 1.0),
-                    new WaitCommand(350),
+                    new WaitCommand(250),
                     new ParallelDeadlineGroup(
                             new FollowPathCommand(robot.follower(), paths.Path4,false, 1.0),
                             intake.intakeAutoOn(),

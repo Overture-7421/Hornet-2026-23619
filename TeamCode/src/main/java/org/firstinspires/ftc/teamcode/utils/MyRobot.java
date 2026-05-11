@@ -9,6 +9,7 @@ import com.seattlesolvers.solverslib.command.CommandScheduler;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.ParallelCommandGroup;
 import com.seattlesolvers.solverslib.command.ParallelDeadlineGroup;
+import com.seattlesolvers.solverslib.command.ParallelRaceGroup;
 import com.seattlesolvers.solverslib.command.Robot;
 import com.seattlesolvers.solverslib.command.SequentialCommandGroup;
 import com.seattlesolvers.solverslib.command.WaitCommand;
@@ -123,7 +124,8 @@ public class MyRobot extends Robot {
     public SequentialCommandGroup shootAutonomous(){
         return new SequentialCommandGroup(
                 chassis.autoAlign(),
-                shooter.setShooter(),
+                new ParallelRaceGroup(shooter.setShooter(), new WaitCommand(3000
+                )),
                 intake.shootCommand(),
                 new WaitCommand(1000)
                 );
