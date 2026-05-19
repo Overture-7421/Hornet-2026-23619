@@ -48,7 +48,7 @@ public class Intake extends SubsystemBase {
     }
 
     private boolean checkTopSensor(){
-        return topSensor.getDistance(DistanceUnit.CM) < 5.5;
+        return topSensor.getDistance(DistanceUnit.CM) < 5.4;
     }
 
     public InstantCommand shootCommand(){
